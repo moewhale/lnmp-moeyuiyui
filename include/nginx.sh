@@ -157,6 +157,7 @@ Install_Nginx()
 
     chown -R www:www ${Default_Website_Dir}
 
+    mkdir /usr/local/nginx/conf/ssl
     mkdir /usr/local/nginx/conf/vhost
 
     if [ "${Default_Website_Dir}" != "/home/wwwroot/default" ]; then
