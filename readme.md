@@ -33,12 +33,17 @@ screen -S lnmp
 
 再执行LNMP安装命令：
 ```bash
-git clone https://github.com/moewhale/lnmp-moeyuiyui.git && mv lnmp-moeyuiyui lnmp && cd lnmp && ./install.sh {lnmp|lnmpa|lamp}
+git clone https://github.com/moewhale/lnmp-moeyuiyui.git
+mv lnmp-moeyuiyui lnmp
+cd lnmp
+./install.sh {lnmp|lnmpa|lamp}
 ```
 
 或者从release里下载lnmp-lua-zend.tar.gz
 ```bash
-tar -xzf lnmp-lua-zend.tar.gz && cd lnmp && ./install.sh {lnmp|lnmpa|lamp}
+tar -xzf lnmp-lua-zend.tar.gz
+cd lnmp
+./install.sh {lnmp|lnmpa|lamp}
 ```
 
 如断线可使用`screen -r lnmp` 恢复。**详细安装教程参考：<https://lnmp.org/install.html>**
