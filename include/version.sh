@@ -47,7 +47,7 @@ elif [ "${DBSelect}" = "9" ]; then
 elif [ "${DBSelect}" = "10" ]; then
     Mariadb_Ver='mariadb-10.6.19'
 elif [ "${DBSelect}" = "11" ]; then
-    Mariadb_Ver='mariadb-10.11.9'
+    Mariadb_Ver='mariadb-10.11.11'
 fi
 if [ "${PHPSelect}" = "1" ]; then
     Php_Ver='php-5.2.17'
@@ -76,7 +76,7 @@ elif [ "${PHPSelect}" = "12" ]; then
 elif [ "${PHPSelect}" = "13" ]; then
     Php_Ver='php-8.2.27'
 elif [ "${PHPSelect}" = "14" ]; then
-    Php_Ver='php-8.3.17'
+    Php_Ver='php-8.3.19'
 fi
 if [[ "${PHPSelect}" =~ ^[123]$ ]]; then
     PhpMyAdmin_Ver='phpMyAdmin-4.0.10.20-all-languages'
@@ -90,17 +90,17 @@ APR_Util_Ver='apr-util-1.6.3'
 if [ "${ApacheSelect}" = "1" ]; then
     Apache_Ver='httpd-2.2.34'
 elif [ "${ApacheSelect}" = "2" ]; then
-    Apache_Ver='httpd-2.4.62'
+    Apache_Ver='httpd-2.4.63'
 fi
 
 Pureftpd_Ver='pure-ftpd-1.0.51'
 
 XCache_Ver='xcache-3.2.0'
-ImageMagick_Ver='ImageMagick-7.1.1-23'
+ImageMagick_Ver='ImageMagick-7.1.1-46'
 Imagick_Ver='imagick-3.7.0'
 ZendOpcache_Ver='zendopcache-7.0.5'
 Redis_Stable_Ver='redis-7.4.2'
-PHPRedis_Ver='redis-5.3.7'
+PHPRedis_Ver='redis-6.1.0'
 Memcached_Ver='memcached-1.6.15'
 Libmemcached_Ver='libmemcached-1.0.18'
 PHPMemcached_Ver='memcached-2.2.0'
