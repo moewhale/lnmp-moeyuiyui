@@ -308,7 +308,7 @@ EOF
     /etc/init.d/mariadb start
 
     echo "Restore backup databases..."
-    /usr/local/mariadb/bin/mysql --defaults-file=~/.my.cnf < /root/mariadb_all_backup${Upgrade_Date}.sql
+    /usr/local/mariadb/bin/mariadb --defaults-file=~/.my.cnf < /root/mariadb_all_backup${Upgrade_Date}.sql
     echo "Repair databases..."
     /usr/local/mariadb/bin/mysql_upgrade -u root -p${DB_Root_Password}
 
