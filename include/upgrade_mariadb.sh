@@ -4,7 +4,7 @@ Backup_MariaDB()
 {
     echo "Starting backup all databases..."
     echo "If the database is large, the backup time will be longer."
-    /usr/local/mariadb/bin/mariadb --defaults-file=~/.my.cnf --all-databases > /root/mariadb_all_backup${Upgrade_Date}.sql
+    /usr/local/mariadb/bin/mysqldump --defaults-file=~/.my.cnf --all-databases > /root/mariadb_all_backup${Upgrade_Date}.sql
     if [ $? -eq 0 ]; then
         echo "MariaDB databases backup successfully.";
     else
