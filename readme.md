@@ -24,11 +24,27 @@ LNMP一键安装包是一个用Linux Shell编写的可以为CentOS/RHEL/Fedora/D
 
 ## LNMP安装
 
-安装前确认已经安装git命令，如提示git: command not found ，使用`yum install git` 或 `apt-get install git` 命令安装。
-为防止掉线等情况，建议使用screen，可以先执行：screen -S lnmp 命令后，再执行LNMP安装命令：
-`git clone https://github.com/moeYuiYui/lnmp.git && cd lnmp && ./install.sh {lnmp|lnmpa|lamp}`
+安装前确认已经安装git命令，如提示 git: command not found ，使用 `yum install git` 或 `apt-get install git` 命令安装。
+
+为防止掉线等情况，建议使用 screen ，可以先执行：
+```bash
+screen -S lnmp
+```
+
+再执行LNMP安装命令：
+```bash
+git clone https://github.com/moewhale/lnmp-moeyuiyui.git
+mv lnmp-moeyuiyui lnmp
+cd lnmp
+./install.sh {lnmp|lnmpa|lamp}
+```
+
 或者从release里下载lnmp-lua-zend.tar.gz
-`tar -xzf lnmp-lua-zend.tar.gz && cd lnmp && ./install.sh {lnmp|lnmpa|lamp}`
+```bash
+tar -xzf lnmp-lua-zend.tar.gz
+cd lnmp
+./install.sh {lnmp|lnmpa|lamp}
+```
 
 如断线可使用`screen -r lnmp` 恢复。**详细安装教程参考：<https://lnmp.org/install.html>**
 
