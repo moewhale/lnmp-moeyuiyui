@@ -970,8 +970,8 @@ Check_Stack()
 
 Check_DB()
 {
-    if [[ -s /usr/local/mariadb/bin/mysql && -s /usr/local/mariadb/bin/mysqld_safe && -s /etc/my.cnf ]]; then
-        MySQL_Bin="/usr/local/mariadb/bin/mysql"
+    if [[ -s /usr/local/mariadb/bin/mariadb && -s /usr/local/mariadb/bin/mysqld_safe && -s /etc/my.cnf ]]; then
+        MySQL_Bin="/usr/local/mariadb/bin/mariadb"
         MySQL_Config="/usr/local/mariadb/bin/mysql_config"
         MySQL_Dir="/usr/local/mariadb"
         Is_MySQL="n"
