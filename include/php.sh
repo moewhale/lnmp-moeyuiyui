@@ -1398,5 +1398,9 @@ eof
     mkdir ${Default_Website_Dir}/phpmyadmin/{upload,save}
     chmod 755 -R ${Default_Website_Dir}/phpmyadmin/
     chown www:www -R ${Default_Website_Dir}/phpmyadmin/
+    # 生成 22位 僅包含字母與數字的字串
+    PMA_Random_String=$(head -c 100 /dev/urandom | tr -dc 'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789_' | fold -w 22 | head -n 1)
+    # 更改目錄名稱
+    mv ${Default_Website_Dir}/phpmyadmin/ ${Default_Website_Dir}/${PMA_Random_String}/
     echo "============================phpMyAdmin install completed======================="
 }
