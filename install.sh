@@ -111,13 +111,17 @@ Init_Install()
     elif [ "${DBSelect}" = "7" ]; then
         Install_MariaDB_5
     elif [ "${DBSelect}" = "8" ]; then
-        Install_MariaDB_103
-    elif [ "${DBSelect}" = "9" ]; then
         Install_MariaDB_104
-    elif [ "${DBSelect}" = "10" ]; then
+    elif [ "${DBSelect}" = "9" ]; then
         Install_MariaDB_105
-    elif [ "${DBSelect}" = "11" ]; then
+    elif [ "${DBSelect}" = "10" ]; then
         Install_MariaDB_106
+    elif [ "${DBSelect}" = "11" ]; then
+        Install_MariaDB_1011
+    elif [ "${DBSelect}" = "12" ]; then
+        Install_MariaDB_114
+    elif [ "${DBSelect}" = "13" ]; then
+        Install_MariaDB_118
     fi
     TempMycnf_Clean
     Clean_DB_Src_Dir
@@ -154,6 +158,8 @@ Install_PHP()
         Install_PHP_82
     elif [ "${PHPSelect}" = "14" ]; then
         Install_PHP_83
+    elif [ "${PHPSelect}" = "15" ]; then
+        Install_PHP_84
     fi
     Clean_PHP_Src_Dir
 }
