@@ -161,7 +161,7 @@ MariaDB 10.11 | 11 | PHP 7.4 | 10 | | | |
 MariaDB 11.4  | 12 | PHP 8.1 | 12 | | | |
 MariaDB 11.8 | 13 | PHP 8.2 | 13 | | | |
 不安装数据库 | 0 | PHP 8.3 | 14 | | | |
-| | | | PHP 8.4 | 15 | | | |
+| | | PHP 8.4 | 15 | | | |
 
 * 以LNMP模式，默认选项安装MySQL 5.5、MySQL root密码设置为lnmp.org、启用InnoDB、PHP 5.6、不安装内存分配器为例，先执行([建议先运行screen](https://www.vpser.net/manage/run-screen-lnmp.html))，再下载解压lnmp安装包：
 
