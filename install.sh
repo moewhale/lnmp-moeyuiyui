@@ -80,9 +80,13 @@ Init_Install()
     Disable_Selinux
     Check_Download
     Install_Libiconv
-    Install_Libmcrypt
-    Install_Mhash
-    Install_Mcrypt
+
+    if [[ "${php_version}" =~ ^5|7.[01]$ ]]; then
+        Install_Libmcrypt
+        Install_Mhash
+        Install_Mcrypt
+    fi
+
     Install_Freetype
     Install_Pcre
     Install_Icu4c
