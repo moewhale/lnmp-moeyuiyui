@@ -498,7 +498,7 @@ Check_Download()
                 Download_Files https://cdn.mysql.com/archives/mysql-${Mysql_Ver_Short}/${Mysql_Ver}.tar.gz ${Mysql_Ver}.tar.gz
             fi
         fi
-    elif [[ "${DBSelect}" =~ ^[789]|1[0-1]$ ]]; then
+    elif [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
         Mariadb_Version_Short=$(echo ${Mariadb_Ver} | cut -d- -f2)
         if [ "${Bin}" = "y" ]; then
             MariaDB_FileName="${Mariadb_Ver}-linux-systemd-${DB_ARCH}"
