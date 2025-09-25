@@ -184,10 +184,7 @@ Install_Database()
                     Download_Files https://archive.mariadb.org/${Mariadb_Ver}/bintar-linux-systemd-x86_64/${Mariadb_Ver}-linux-systemd-x86_64.tar.gz ${Mariadb_Ver}-linux-systemd-x86_64.tar.gz
                 fi
             else
-                Download_Files https://downloads.mariadb.org/rest-api/mariadb/${Mariadb_Version_Short}/${Mariadb_Ver}-linux-systemd-x86_64.tar.gz ${Mariadb_Ver}-linux-systemd-x86_64.tar.gz
-                if [ $? -ne 0 ]; then
-                    Download_Files https://archive.mariadb.org/${Mariadb_Ver}/bintar-linux-systemd-x86_64/${Mariadb_Ver}-linux-systemd-x86_64.tar.gz ${Mariadb_Ver}-linux-systemd-x86_64.tar.gz
-                fi
+                Download_Files https://archive.mariadb.org/${Mariadb_Ver}/bintar-linux-systemd-x86_64/${Mariadb_Ver}-linux-systemd-x86_64.tar.gz ${Mariadb_Ver}-linux-systemd-x86_64.tar.gz
             fi
         else
             if [ "${country}" = "CN" ]; then
@@ -196,10 +193,7 @@ Install_Database()
             	    Download_Files https://archive.mariadb.org/${Mariadb_Ver}/source/${Mariadb_Ver}.tar.gz ${Mariadb_Ver}.tar.gz
                 fi
             else
-                Download_Files https://downloads.mariadb.org/rest-api/mariadb/${Mariadb_Version_Short}/${Mariadb_Ver}.tar.gz ${Mariadb_Ver}.tar.gz
-                if [ $? -ne 0 ]; then
-            	    Download_Files https://archive.mariadb.org/${Mariadb_Ver}/source/${Mariadb_Ver}.tar.gz ${Mariadb_Ver}.tar.gz
-                fi
+            	Download_Files https://archive.mariadb.org/${Mariadb_Ver}/source/${Mariadb_Ver}.tar.gz ${Mariadb_Ver}.tar.gz
             fi
         fi
     fi
@@ -233,9 +227,9 @@ Install_Database()
     elif [ "${DBSelect}" = "11" ]; then
         Install_MariaDB_1011
     elif [ "${DBSelect}" = "12" ]; then
-        Install_MariaDB_1148
+        Install_MariaDB_114
     elif [ "${DBSelect}" = "13" ]; then
-        Install_MariaDB_1183
+        Install_MariaDB_118
     fi
     TempMycnf_Clean
 
