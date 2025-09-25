@@ -63,8 +63,14 @@ lnmp ftp {add|list|del}
 ```
 
 ### 升级脚本：
-执行：`./upgrade.sh` 按提示进行选择
-也可以直接带参数：`./upgrade.sh {nginx|mysql|mariadb|php|phpa|m2m|phpmyadmin}`
+按提示升级命令
+```bash
+./upgrade.sh
+```
+带参数升级命令
+```bash
+./upgrade.sh {nginx|mysql|mariadb|php|phpa|m2m|phpmyadmin}
+```
 * 参数: nginx   可升级至任意Nginx版本。
 * 参数: mysql   可升级至任意MySQL版本，MySQL升级风险较大，虽然会自动备份数据，依然建议自行再备份一下。
 * 参数: mariadb 可升级已安装的Mariadb，虽然会自动备份数据，依然建议自行再备份一下。
@@ -75,7 +81,10 @@ lnmp ftp {add|list|del}
 * 参数: phpmyadmin    可升级phpMyadmin。
 
 ### 扩展插件
-执行: `./addons.sh {install|uninstall} {eaccelerator|xcache|memcached|opcache|redis|apcu|imagemagick|ioncube|exif|fileinfo|ldap|bz2|sodium|imap|swoole}`
+带参数安裝扩展命令
+```bash
+./addons.sh {install|uninstall} {eaccelerator|xcache|memcached|opcache|redis|apcu|imagemagick|ioncube|exif|fileinfo|ldap|bz2|sodium|imap|swoole}
+```
 以下为扩展插件安装使用说明
 #### 缓存加速：
 * 参数: xcache 安装时需选择版本和设置密码，http://yourIP/xcache/ 进行管理，用户名 admin，密码为安装xcache时设置的。
