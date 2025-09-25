@@ -1450,7 +1450,7 @@ eof
 
     echo "Copy PHP Prober..."
     cd ${cur_dir}/src
-    tar zxf p.tar.gz
+    wget -O p.php https://raw.githubusercontent.com/kmvan/x-prober/master/dist/prober.php
     \cp p.php ${Default_Website_Dir}/p.php
 
     \cp ${cur_dir}/conf/index.html ${Default_Website_Dir}/index.html
