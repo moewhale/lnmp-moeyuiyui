@@ -174,7 +174,7 @@ Install_Database()
                 exit 1
             fi
         fi
-    elif [[ "${DBSelect}" =~ ^[789]|1[0-1]$ ]]; then
+    elif [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
         Mariadb_Version_Short=$(echo ${Mariadb_Ver} | cut -d- -f2)
         if [ "${Bin}" = "y" ]; then
             MariaDB_FileName="${Mariadb_Ver}-linux-systemd-${DB_ARCH}"
@@ -225,17 +225,21 @@ Install_Database()
     elif [ "${DBSelect}" = "7" ]; then
         Install_MariaDB_5
     elif [ "${DBSelect}" = "8" ]; then
-        Install_MariaDB_103
-    elif [ "${DBSelect}" = "9" ]; then
         Install_MariaDB_104
-    elif [ "${DBSelect}" = "10" ]; then
+    elif [ "${DBSelect}" = "9" ]; then
         Install_MariaDB_105
-    elif [ "${DBSelect}" = "11" ]; then
+    elif [ "${DBSelect}" = "10" ]; then
         Install_MariaDB_106
+    elif [ "${DBSelect}" = "11" ]; then
+        Install_MariaDB_1011
+    elif [ "${DBSelect}" = "12" ]; then
+        Install_MariaDB_1148
+    elif [ "${DBSelect}" = "13" ]; then
+        Install_MariaDB_1183
     fi
     TempMycnf_Clean
 
-    if [[ "${DBSelect}" =~ ^[789]|1[0-1]$ ]]; then
+    if [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
         StartUp mariadb
         StartOrStop start mariadb
     elif [[ "${DBSelect}" =~ ^[123456]$ ]]; then
@@ -249,7 +253,7 @@ Install_Database()
         if [[ "${DBSelect}" =~ ^[123456]$ ]]; then
             Echo_Green "MySQL root password: ${DB_Root_Password}"
             Echo_Green "Install ${Mysql_Ver} completed! enjoy it."
-        elif [[ "${DBSelect}" =~ ^[789]|1[0-1]$ ]]; then
+        elif [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
             Echo_Green "MariaDB root password: ${DB_Root_Password}"
             Echo_Green "Install ${Mariadb_Ver} completed! enjoy it."
         fi
