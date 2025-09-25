@@ -9,16 +9,15 @@ LNMP一键安装包是一个用Linux Shell编写的可以为CentOS/RHEL/Fedora/D
 * 删除下载镜像，所有软件包均从软件官方镜像获取。去除所有与以下域名有关的操作："lnmp.com"、"lnmp.org"、"vpser.net"、"vpser*.net"、"vpszt.net"
 * 由于去除的lnmp.org的下载镜像，中国大陆用户不友好请自行解决。
 * 去除了自动获取服务器所在地，相关设置移动至lnmp.conf > " country='US' " 默认US。大陆用户可以修改将US为CN，mariadb将从USTC镜像获取。
-* 由于去除了下载镜像，SourceGuardian以及ionCube安装失效，如有需求可以通过修改lnmp.conf中" Download_Mirror='https://soft.vpser.net' "恢复lnmp.org下载镜像即可安装。
+* 由于去除了下载镜像，SourceGuardian以及ionCube安装失效，如有需求可以通过修改lnmp.conf中" Download_Mirror='`https://soft.vpser.net`' "恢复lnmp.org下载镜像即可安装。
 * Nginx Lua以及Zend无法在线获取，可以在release下载自带lua以及zend的包安装。
-* 虽然并没有修改脚本的逻辑，但是使用魔改版请不要去 https://bbs.vpser.net/forum-25-1.html 反馈。
 
 ## LNMP一键安装包有哪些功能？
 
 支持自定义Nginx、PHP编译参数及网站和数据库目录、支持生成Let's Ecrypt/ZeroSSL/BuyPass免费SSL证书、支持无人值守、LNMP模式支持多PHP版本、支持单独安装Nginx/MySQL/MariaDB/Pureftpd服务器，同时提供一些实用的辅助工具如：虚拟主机管理、FTP用户管理、Nginx、MySQL/MariaDB、PHP的升级、常见PHP模块exif、fileinfo、ldap、bz2、sodium、imap和swoole的一键安装、常用缓存组件Redis/Xcache等的安装、重置MySQL root密码、502自动重启、日志切割、SSH防护DenyHosts/Fail2Ban、备份等许多实用脚本。
 
-* LNMP官网：https://lnmp.org
-* 作者: licess admin@lnmp.org
+* 官网：`https://lnmp.org`
+* 作者: `licess admin@lnmp.org`
 
 ## LNMP安装
 
