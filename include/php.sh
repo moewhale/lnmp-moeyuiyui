@@ -122,7 +122,7 @@ PHP_with_Sodium()
         elif [ "$PM" = "apt" ]; then
             apt-get install -y libsodium-dev
         fi
-        if echo "${PHPSelect}" | grep -Eqi "^[8-9]|1[0-2]$" || echo "${php_version}" | grep -Eqi '^7.[2-4].*|8.*' || echo "${Php_Ver}" | grep -Eqi "php-7.[2-4].*|php-8.*"; then
+        if echo "${PHPSelect}" | grep -Eqi "^[8-9]|1[0-5]$" || echo "${php_version}" | grep -Eqi '^7.[2-4].*|8.*' || echo "${Php_Ver}" | grep -Eqi "php-7.[2-4].*|php-8.*"; then
             with_sodium='--with-sodium'
         else
             Echo_Red 'Below PHP 7.2 please use " . /addons.sh install sodium " to install the PHP Sodium module.'
