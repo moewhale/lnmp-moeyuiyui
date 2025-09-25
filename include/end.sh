@@ -42,7 +42,7 @@ Add_LNMP_Startup()
     chmod +x /bin/lnmp
     StartUp nginx
     StartOrStop start nginx
-    if [[ "${DBSelect}" =~ ^[789]|1[0-1]$ ]]; then
+    if [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
         StartUp mariadb
         StartOrStop start mariadb
         sed -i 's#/etc/init.d/mysql#/etc/init.d/mariadb#' /bin/lnmp
@@ -66,7 +66,7 @@ Add_LNMPA_Startup()
     chmod +x /bin/lnmp
     StartUp nginx
     StartOrStop start nginx
-    if [[ "${DBSelect}" =~ ^[789]|1[0-1]$ ]]; then
+    if [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
         StartUp mariadb
         StartOrStop start mariadb
         sed -i 's#/etc/init.d/mysql#/etc/init.d/mariadb#' /bin/lnmp
@@ -87,7 +87,7 @@ Add_LAMP_Startup()
     chmod +x /bin/lnmp
     StartUp httpd
     StartOrStop start httpd
-    if [[ "${DBSelect}" =~ ^[789]|1[0-1]$ ]]; then
+    if [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
         StartUp mariadb
         StartOrStop start mariadb
         sed -i 's#/etc/init.d/mysql#/etc/init.d/mariadb#' /bin/lnmp
@@ -115,7 +115,7 @@ Check_Nginx_Files()
 Check_DB_Files()
 {
     isDB=""
-    if [[ "${DBSelect}" =~ ^[789]|1[0-1]$ ]]; then
+    if [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
         if [[ -s /usr/local/mariadb/bin/mysql && -s /usr/local/mariadb/bin/mysqld_safe && -s /etc/my.cnf ]]; then
             Echo_Green "MariaDB: OK"
             isDB="ok"
@@ -166,7 +166,7 @@ Check_Apache_Files()
         else
             Echo_Red "Error: Apache install failed."
         fi
-    elif [[ "${PHPSelect}" =~ ^1[1-3]$ ]]; then
+    elif [[ "${PHPSelect}" =~ ^1[1-5]$ ]]; then
         if [[ -s /usr/local/apache/bin/httpd && -s /usr/local/apache/modules/libphp.so && -s /usr/local/apache/conf/httpd.conf ]]; then
             Echo_Green "Apache: OK"
             isApache="ok"
@@ -188,7 +188,7 @@ Clean_DB_Src_Dir()
     echo "Clean database src directory..."
     if [[ "${DBSelect}" =~ ^[123456]$ ]]; then
         rm -rf ${cur_dir}/src/${Mysql_Ver}
-    elif [[ "${DBSelect}" =~ ^[789]|1[0-1]$ ]]; then
+    elif [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
         rm -rf ${cur_dir}/src/${Mariadb_Ver}
     fi
     if [[ "${DBSelect}" = "4" ]]; then
