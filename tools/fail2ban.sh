@@ -31,8 +31,8 @@ fi
 
 echo "Downloading..."
 cd ../src
-Download_Files https://sources.buildroot.net/fail2ban/fail2ban-1.0.2.tar.gz fail2ban-1.0.2.tar.gz
-tar zxf fail2ban-1.0.2.tar.gz && cd fail2ban-1.0.2
+Download_Files https://sources.buildroot.net/fail2ban/fail2ban-1.0.3.tar.gz fail2ban-1.0.3.tar.gz
+tar zxf fail2ban-1.0.3.tar.gz && cd fail2ban-1.0.3
 echo "Installing fail2ban..."
 python3 setup.py install
 
@@ -63,7 +63,7 @@ elif [ "${PM}" = "apt" ]; then
 fi
 chmod +x /etc/init.d/fail2ban
 cd ..
-rm -rf fail2ban-1.0.2
+rm -rf fail2ban-1.0.3
 
 StartUp fail2ban
 
