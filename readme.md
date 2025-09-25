@@ -17,10 +17,8 @@ LNMP一键安装包是一个用Linux Shell编写的可以为CentOS/RHEL/Fedora/D
 
 支持自定义Nginx、PHP编译参数及网站和数据库目录、支持生成Let's Ecrypt/ZeroSSL/BuyPass免费SSL证书、支持无人值守、LNMP模式支持多PHP版本、支持单独安装Nginx/MySQL/MariaDB/Pureftpd服务器，同时提供一些实用的辅助工具如：虚拟主机管理、FTP用户管理、Nginx、MySQL/MariaDB、PHP的升级、常见PHP模块exif、fileinfo、ldap、bz2、sodium、imap和swoole的一键安装、常用缓存组件Redis/Xcache等的安装、重置MySQL root密码、502自动重启、日志切割、SSH防护DenyHosts/Fail2Ban、备份等许多实用脚本。
 
-* LNMP官网：<https://lnmp.org>
-* 作者: licess <admin@lnmp.org>
-* 问题反馈&技术支持论坛：<https://bbs.lnmp.com/forum-25-1.html>
-* 打赏捐赠：<https://lnmp.org/donation.html>
+* LNMP官网：https://lnmp.org
+* 作者: licess admin@lnmp.org
 
 ## LNMP安装
 
@@ -56,7 +54,14 @@ cd lnmp
 lnmp.conf配置文件，可以修改lnmp.conf自定义下载服务器地址、网站/数据库目录及添加nginx模块和php编译参数；不论安装升级都会调用该文件里的设置(如果修改了默认的参数建议备份此文件)；
 
 ### FTP服务器
-执行：`./pureftpd.sh` 安装，可使用 `lnmp ftp {add|list|del}` 进行管理。
+安装命令
+```bash
+./pureftpd.sh
+```
+管理命令
+```bash
+lnmp ftp {add|list|del}
+```
 
 ### 升级脚本：
 执行：`./upgrade.sh` 按提示进行选择
@@ -227,6 +232,5 @@ MariaDB 10.11 | 11 | PHP 7.4 | 10 | | | |
 |Enable_PHP_Sodium|是否添加PHP sodium模块，PHP 7.2以下不支持lnmp.conf开启安装|默认n，更改为y即安装|
 |Enable_PHP_Imap|是否添加PHP imap模块|默认n，更改为y即安装|
 
-## 技术支持
+## 無技術支援
 
-**技术支持论坛：<https://bbs.lnmp.com/forum-25-1.html>**
