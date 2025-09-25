@@ -81,6 +81,10 @@ lnmp ftp {add|list|del}
 * 参数: phpmyadmin    可升级phpMyadmin。
 
 ### 扩展插件
+按提示安裝扩展命令
+```bash
+./addons.sh
+```
 带参数安裝扩展命令
 ```bash
 ./addons.sh {install|uninstall} {eaccelerator|xcache|memcached|opcache|redis|apcu|imagemagick|ioncube|exif|fileinfo|ldap|bz2|sodium|imap|swoole}
