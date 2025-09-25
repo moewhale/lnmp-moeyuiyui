@@ -36,9 +36,8 @@ Deb_InstallNTP()
     if [ "${CheckMirror}" != "n" ]; then
         apt-get update -y
         [[ $? -ne 0 ]] && apt-get update --allow-releaseinfo-change -y
-        Echo_Blue "[+] Installing ntp..."
-        apt-get install -y ntpdate
-        ntpdate -u pool.ntp.org
+        Echo_Blue "[+] Installing openntpd..."
+        apt-get install -y openntpd
     fi
     date
     start_time=$(date +%s)
