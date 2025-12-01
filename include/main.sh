@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 DB_Info=('MySQL 5.1.73' 'MySQL 5.5.62' 'MySQL 5.6.51' 'MySQL 5.7.44' 'MySQL 8.0.43' 'MySQL 8.4.6' 'MariaDB 5.5.68' 'MariaDB 10.4.34' 'MariaDB 10.5.26' 'MariaDB 10.6.19' 'MariaDB 10.11.14' 'MariaDB 11.4.8' 'MariaDB 11.8.3')
-PHP_Info=('PHP 5.2.17' 'PHP 5.3.29' 'PHP 5.4.45' 'PHP 5.5.38' 'PHP 5.6.40' 'PHP 7.0.33' 'PHP 7.1.33' 'PHP 7.2.34' 'PHP 7.3.33' 'PHP 7.4.33' 'PHP 8.0.30' 'PHP 8.1.33' 'PHP 8.2.29' 'PHP 8.3.27' 'PHP 8.4.14')
+PHP_Info=('PHP 5.2.17' 'PHP 5.3.29' 'PHP 5.4.45' 'PHP 5.5.38' 'PHP 5.6.40' 'PHP 7.0.33' 'PHP 7.1.33' 'PHP 7.2.34' 'PHP 7.3.33' 'PHP 7.4.33' 'PHP 8.0.30' 'PHP 8.1.33' 'PHP 8.2.29' 'PHP 8.3.28' 'PHP 8.4.15')
 Apache_Info=('Apache 2.2.34' 'Apache 2.4.65')
 
 Database_Selection()
