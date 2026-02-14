@@ -89,7 +89,7 @@ if [[ "${PHPSelect}" =~ ^[123]$ ]]; then
 elif [[ "${PHPSelect}" =~ ^[456]$ ]]; then
     PhpMyAdmin_Ver='phpMyAdmin-4.9.11-all-languages'
 else
-    PhpMyAdmin_Ver='phpMyAdmin-5.2.2-all-languages'
+    PhpMyAdmin_Ver='phpMyAdmin-5.2.3-all-languages'
 fi
 APR_Ver='apr-1.7.6'
 APR_Util_Ver='apr-util-1.6.3'
