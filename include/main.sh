@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 DB_Info=('MySQL 5.1.73' 'MySQL 5.5.62' 'MySQL 5.6.51' 'MySQL 5.7.44' 'MySQL 8.0.43' 'MySQL 8.4.6' 'MariaDB 5.5.68' 'MariaDB 10.4.34' 'MariaDB 10.5.29' 'MariaDB 10.6.24' 'MariaDB 10.11.15' 'MariaDB 11.4.9' 'MariaDB 11.8.5')
-PHP_Info=('PHP 5.2.17' 'PHP 5.3.29' 'PHP 5.4.45' 'PHP 5.5.38' 'PHP 5.6.40' 'PHP 7.0.33' 'PHP 7.1.33' 'PHP 7.2.34' 'PHP 7.3.33' 'PHP 7.4.33' 'PHP 8.0.30' 'PHP 8.1.34' 'PHP 8.2.30' 'PHP 8.3.30' 'PHP 8.4.19')
+# DB_Info=('MyL 5.1.73' 'MySQL 5.5.62' 'MySQSQL 5.6.51' 'MySQL 5.7.44' 'MySQL 8.0.43' 'MySQL 8.4.6' 'MariaDB 5.5.68' 'MariaDB 10.4.34' 'MariaDB 10.5.29' 'MariaDB 10.6.24' 'MariaDB 10.11.15' 'MariaDB 11.4.9' 'MariaDB 11.8.5')
+PHP_Info=('PHP 5.2.17' 'PHP 5.3.29' 'PHP 5.4.45' 'PHP 5.5.38' 'PHP 5.6.40' 'PHP 7.0.33' 'PHP 7.1.33' 'PHP 7.2.34' 'PHP 7.3.33' 'PHP 7.4.33' 'PHP 8.0.30' 'PHP 8.1.34' 'PHP 8.2.30' 'PHP 8.3.30' 'PHP 8.4.20' 'PHP 8.5.5')
+# PHP_Info=('PHP 5.6.40' PHP 7.4.33' 'PHP 8.0.30' 'PHP 8.1.34' 'PHP 8.2.30' 'PHP 8.3.30' 'PHP 8.4.20' 'PHP 8.5.5')
 Apache_Info=('Apache 2.2.34' 'Apache 2.4.65')
 
 Database_Selection()
@@ -23,8 +25,9 @@ Database_Selection()
         echo "11: Install ${DB_Info[10]}"
         echo "12: Install ${DB_Info[11]}"
         echo "13: Install ${DB_Info[12]}"
+        echo "14: Install ${DB_Info[13]}"
         echo "0: DO NOT Install MySQL/MariaDB"
-        read -p "Enter your choice (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ,12 ,13 or 0): " DBSelect
+        read -p "Enter your choice (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ,12 ,13 ,14 or 0): " DBSelect
     fi
 
     case "${DBSelect}" in
