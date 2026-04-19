@@ -978,7 +978,7 @@ Check_CMPT()
             exit 1
         fi
     fi
-    if [[ "${PHPSelect}" =~ ^1[0-5]$ ]]; then
+    if [[ "${PHPSelect}" =~ ^1[0-6]$ ]]; then
         if echo "${Ubuntu_Version}" | grep -Eqi "^1[0-7]\." || echo "${Debian_Version}" | grep -Eqi "^[4-8]" || echo "${Raspbian_Version}" | grep -Eqi "^[4-8]" || echo "${CentOS_Version}" | grep -Eqi "^[4-6]"  || echo "${RHEL_Version}" | grep -Eqi "^[4-6]" || echo "${Fedora_Version}" | grep -Eqi "^2[0-3]"; then
             Echo_Red "PHP 7.4 and PHP 8.* please use latest linux distributions!"
             exit 1
