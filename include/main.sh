@@ -511,6 +511,9 @@ PHP_Selection()
     15)
         echo "You will install ${PHP_Info[14]}"
         ;;
+    16)
+        echo "You will install ${PHP_Info[15]}"
+        ;;
     *)
         echo "No input,You will install ${PHP_Info[4]}"
         PHPSelect="5"
