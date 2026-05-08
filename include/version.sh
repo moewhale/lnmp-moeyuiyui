@@ -49,7 +49,7 @@ elif [ "${DBSelect}" = "10" ]; then
 elif [ "${DBSelect}" = "11" ]; then
     Mariadb_Ver='mariadb-10.11.16'
 elif [ "${DBSelect}" = "12" ]; then
-    Mariadb_Ver='mariadb-11.4.10'
+    Mariadb_Ver='mariadb-11.4.11'
 elif [ "${DBSelect}" = "13" ]; then
     Mariadb_Ver='mariadb-11.8.6'
 fi
@@ -78,13 +78,13 @@ elif [ "${PHPSelect}" = "11" ]; then
 elif [ "${PHPSelect}" = "12" ]; then
     Php_Ver='php-8.1.34'
 elif [ "${PHPSelect}" = "13" ]; then
-    Php_Ver='php-8.2.30'
+    Php_Ver='php-8.2.31'
 elif [ "${PHPSelect}" = "14" ]; then
-    Php_Ver='php-8.3.30'
+    Php_Ver='php-8.3.31'
 elif [ "${PHPSelect}" = "15" ]; then
-    Php_Ver='php-8.4.20'
+    Php_Ver='php-8.4.21'
 elif [ "${PHPSelect}" = "16" ]; then
-    Php_Ver='php-8.5.5'
+    Php_Ver='php-8.5.6'
 fi
 if [[ "${PHPSelect}" =~ ^[123]$ ]]; then
     PhpMyAdmin_Ver='phpMyAdmin-4.0.10.20-all-languages'
