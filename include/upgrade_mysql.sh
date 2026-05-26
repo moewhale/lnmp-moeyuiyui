@@ -247,7 +247,7 @@ Upgrade_MySQL56()
     else
         Echo_Blue "Starting upgrade MySQL ${mysql_version} Using Source code..."
         if [ "${isOpenSSL3}" = "y" ]; then
-            Install_Openssl_New
+            Install_Openssl_Compat
             MySQL_WITH_SSL='-DWITH_SSL=/usr/local/openssl1.1.1'
         else
             MySQL_WITH_SSL=''
@@ -394,7 +394,7 @@ Upgrade_MySQL57()
     else
         Echo_Blue "Starting upgrade MySQL ${mysql_version} Using Source code..."
         if [ "${isOpenSSL3}" = "y" ]; then
-            Install_Openssl_New
+            Install_Openssl_Compat
             MySQL_WITH_SSL='-DWITH_SSL=/usr/local/openssl1.1.1'
         else
             MySQL_WITH_SSL=''

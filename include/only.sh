@@ -50,6 +50,7 @@ Install_Only_Nginx()
     StartUp nginx
     rm -rf ${cur_dir}/src/${Nginx_Ver}
     [[ -d "${cur_dir}/src/${Openssl_Ver}" ]] && rm -rf ${cur_dir}/src/${Openssl_Ver}
+    [[ -d "${cur_dir}/src/${Openssl_Compat_Ver}" ]] && rm -rf ${cur_dir}/src/${Openssl_Compat_Ver}
     [[ -d "${cur_dir}/src/${Openssl_New_Ver}" ]] && rm -rf ${cur_dir}/src/${Openssl_New_Ver}
     StartOrStop start nginx
     Add_Iptables_Rules
@@ -131,13 +132,11 @@ Install_Database()
 {
     echo "============================check files=================================="
     cd ${cur_dir}/src
-    if [[ "${DBSelect}" =~ ^[123456]$ ]]; then
+    if [[ "${DBSelect}" =~ ^(1|2|3|4|5|11)$ ]]; then
         if [[ "${Bin}" = "y" && "${DBSelect}" =~ ^[2-4]$ ]]; then
             Mysql_Ver_Short=$(echo ${Mysql_Ver} | sed 's/mysql-//' | cut -d. -f1-2)
             Download_Files https://cdn.mysql.com/Downloads/MySQL-${Mysql_Ver_Short}/${Mysql_Ver}-linux-glibc2.12-${DB_ARCH}.tar.gz ${Mysql_Ver}-linux-glibc2.12-${DB_ARCH}.tar.gz
-            if [ $? -ne 0 ]; then
-                Download_Files https://cdn.mysql.com/archives/mysql-${Mysql_Ver_Short}/${Mysql_Ver}-linux-glibc2.12-${DB_ARCH}.tar.gz ${Mysql_Ver}-linux-glibc2.12-${DB_ARCH}.tar.gz
-            fi
+            [[ $? -ne 0 ]] && Download_Files https://cdn.mysql.com/archives/mysql-${Mysql_Ver_Short}/${Mysql_Ver}-linux-glibc2.12-${DB_ARCH}.tar.gz ${Mysql_Ver}-linux-glibc2.12-${DB_ARCH}.tar.gz
             if [ ! -s ${Mysql_Ver}-linux-glibc2.12-${DB_ARCH}.tar.gz ]; then
                 Echo_Red "Error! Unable to download MySQL ${Mysql_Ver_Short} Generic Binaries, please download it to src directory manually."
                 sleep 5
@@ -146,15 +145,13 @@ Install_Database()
         elif [[ "${Bin}" = "y" && "${DBSelect}" = "5" ]]; then
             [[ "${DB_ARCH}" = "aarch64" ]] && mysql8_glibc_ver="2.17" || mysql8_glibc_ver="2.12"
             Download_Files https://cdn.mysql.com/Downloads/MySQL-8.0/${Mysql_Ver}-linux-glibc${mysql8_glibc_ver}-${DB_ARCH}.tar.xz ${Mysql_Ver}-linux-glibc${mysql8_glibc_ver}-${DB_ARCH}.tar.xz
-            if [ $? -ne 0 ]; then
-                Download_Files https://cdn.mysql.com/archives/mysql-8.0/${Mysql_Ver}-linux-glibc${mysql8_glibc_ver}-${DB_ARCH}.tar.xz ${Mysql_Ver}-linux-glibc${mysql8_glibc_ver}-${DB_ARCH}.tar.xz
-            fi
+            [[ $? -ne 0 ]] && Download_Files https://cdn.mysql.com/archives/mysql-8.0/${Mysql_Ver}-linux-glibc${mysql8_glibc_ver}-${DB_ARCH}.tar.xz ${Mysql_Ver}-linux-glibc${mysql8_glibc_ver}-${DB_ARCH}.tar.xz
             if [ ! -s ${Mysql_Ver}-linux-glibc${mysql8_glibc_ver}-${DB_ARCH}.tar.xz ]; then
                 Echo_Red "Error! Unable to download MySQL 8.0 Generic Binaries, please download it to src directory manually."
                 sleep 5
                 exit 1
             fi
-        elif [[ "${Bin}" = "y" && "${DBSelect}" = "6" ]]; then
+        elif [[ "${Bin}" = "y" && "${DBSelect}" = "11" ]]; then
             Download_Files https://cdn.mysql.com/Downloads/MySQL-8.4/${Mysql_Ver}-linux-glibc2.17-${DB_ARCH}.tar.xz ${Mysql_Ver}-linux-glibc2.17-${DB_ARCH}.tar.xz
             [[ $? -ne 0 ]] && Download_Files https://cdn.mysql.com/archives/mysql-8.4/${Mysql_Ver}-linux-glibc2.17-${DB_ARCH}.tar.xz ${Mysql_Ver}-linux-glibc2.17-${DB_ARCH}.tar.xz
             if [ ! -s ${Mysql_Ver}-linux-glibc2.17-${DB_ARCH}.tar.xz ]; then
@@ -163,38 +160,25 @@ Install_Database()
                 exit 1
             fi
         else
-            Mysql_Ver_Short=$(echo ${Mysql_Ver} | sed 's/mysql-//' | cut -d. -f1-2)
-            Download_Files https://cdn.mysql.com/Downloads/MySQL-${Mysql_Ver_Short}/${Mysql_Ver}.tar.gz ${Mysql_Ver}.tar.gz
-            if [ $? -ne 0 ]; then
-                Download_Files https://cdn.mysql.com/archives/mysql-${Mysql_Ver_Short}/${Mysql_Ver}.tar.gz ${Mysql_Ver}.tar.gz
-            fi
+            Download_Files ${Download_Mirror}/datebase/mysql/${Mysql_Ver}.tar.gz ${Mysql_Ver}.tar.gz
             if [ ! -s ${Mysql_Ver}.tar.gz ]; then
                 Echo_Red "Error! Unable to download MySQL source code, please download it to src directory manually."
                 sleep 5
                 exit 1
             fi
         fi
-    elif [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
-        Mariadb_Version_Short=$(echo ${Mariadb_Ver} | cut -d- -f2)
+    elif [[ "${DBSelect}" =~ ^(6|7|8|9|10|12|13)$ ]]; then
+        Mariadb_Version=$(echo ${Mariadb_Ver} | cut -d- -f2)
         if [ "${Bin}" = "y" ]; then
             MariaDB_FileName="${Mariadb_Ver}-linux-systemd-${DB_ARCH}"
-            if [ "${country}" = "CN" ]; then
-                Download_Files https://mirrors.ustc.edu.cn/mariadb/${Mariadb_Ver}/bintar-linux-systemd-x86_64/${Mariadb_Ver}-linux-systemd-x86_64.tar.gz ${Mariadb_Ver}-linux-systemd-x86_64.tar.gz
-                if [ $? -ne 0 ]; then
-                    Download_Files https://archive.mariadb.org/${Mariadb_Ver}/bintar-linux-systemd-x86_64/${Mariadb_Ver}-linux-systemd-x86_64.tar.gz ${Mariadb_Ver}-linux-systemd-x86_64.tar.gz
-                fi
-            else
-                Download_Files https://archive.mariadb.org/${Mariadb_Ver}/bintar-linux-systemd-x86_64/${Mariadb_Ver}-linux-systemd-x86_64.tar.gz ${Mariadb_Ver}-linux-systemd-x86_64.tar.gz
-            fi
         else
-            if [ "${country}" = "CN" ]; then
-                Download_Files https://mirrors.ustc.edu.cn/mariadb/${Mariadb_Ver}/source/${Mariadb_Ver}.tar.gz ${Mariadb_Ver}.tar.gz
-                if [ $? -ne 0 ]; then
-            	    Download_Files https://archive.mariadb.org/${Mariadb_Ver}/source/${Mariadb_Ver}.tar.gz ${Mariadb_Ver}.tar.gz
-                fi
-            else
-            	Download_Files https://archive.mariadb.org/${Mariadb_Ver}/source/${Mariadb_Ver}.tar.gz ${Mariadb_Ver}.tar.gz
-            fi
+            MariaDB_FileName="${Mariadb_Ver}"
+        fi
+        Download_Files https://downloads.mariadb.org/rest-api/mariadb/${Mariadb_Version}/${MariaDB_FileName}.tar.gz ${MariaDB_FileName}.tar.gz
+        if [ ! -s ${MariaDB_FileName}.tar.gz ]; then
+            Echo_Red "Error! Unable to download MariaDB, please download it to src directory manually."
+            sleep 5
+            exit 1
         fi
     fi
     echo "============================check files=================================="
@@ -215,17 +199,17 @@ Install_Database()
     elif [ "${DBSelect}" = "5" ]; then
         Install_MySQL_80
     elif [ "${DBSelect}" = "6" ]; then
-        Install_MySQL_84
-    elif [ "${DBSelect}" = "7" ]; then
         Install_MariaDB_5
-    elif [ "${DBSelect}" = "8" ]; then
+    elif [ "${DBSelect}" = "7" ]; then
         Install_MariaDB_104
-    elif [ "${DBSelect}" = "9" ]; then
+    elif [ "${DBSelect}" = "8" ]; then
         Install_MariaDB_105
-    elif [ "${DBSelect}" = "10" ]; then
+    elif [ "${DBSelect}" = "9" ]; then
         Install_MariaDB_106
-    elif [ "${DBSelect}" = "11" ]; then
+    elif [ "${DBSelect}" = "10" ]; then
         Install_MariaDB_1011
+    elif [ "${DBSelect}" = "11" ]; then
+        Install_MySQL_84
     elif [ "${DBSelect}" = "12" ]; then
         Install_MariaDB_114
     elif [ "${DBSelect}" = "13" ]; then
@@ -233,10 +217,10 @@ Install_Database()
     fi
     TempMycnf_Clean
 
-    if [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
+    if [[ "${DBSelect}" =~ ^(6|7|8|9|10|12|13)$ ]]; then
         StartUp mariadb
         StartOrStop start mariadb
-    elif [[ "${DBSelect}" =~ ^[123456]$ ]]; then
+    elif [[ "${DBSelect}" =~ ^(1|2|3|4|5|11)$ ]]; then
         StartUp mysql
         StartOrStop start mysql
     fi
@@ -244,10 +228,10 @@ Install_Database()
     Clean_DB_Src_Dir
     Check_DB_Files
     if [[ "${isDB}" = "ok" ]]; then
-        if [[ "${DBSelect}" =~ ^[123456]$ ]]; then
+        if [[ "${DBSelect}" =~ ^(1|2|3|4|5|11)$ ]]; then
             Echo_Green "MySQL root password: ${DB_Root_Password}"
             Echo_Green "Install ${Mysql_Ver} completed! enjoy it."
-        elif [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
+        elif [[ "${DBSelect}" =~ ^(6|7|8|9|10|12|13)$ ]]; then
             Echo_Green "MariaDB root password: ${DB_Root_Password}"
             Echo_Green "Install ${Mariadb_Ver} completed! enjoy it."
         fi

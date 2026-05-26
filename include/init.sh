@@ -160,6 +160,9 @@ RHEL_Modify_Source()
         elif echo "${RHEL_Version}" | grep -Eqi "^9"; then
             [[ -s /etc/yum.repos.d/Centos-9.repo ]] && rm -f /etc/yum.repos.d/Centos-9.repo
             \cp ${cur_dir}/conf/rhel-9.repo /etc/yum.repos.d/Centos-9.repo
+        elif echo "${RHEL_Version}" | grep -Eqi "^10"; then
+            [[ -s /etc/yum.repos.d/Centos-10.repo ]] && rm -f /etc/yum.repos.d/Centos-10.repo
+            \cp ${cur_dir}/conf/rhel-10.repo /etc/yum.repos.d/Centos-10.repo
         fi
         yum clean all
         yum makecache
@@ -229,6 +232,10 @@ Ubuntu_Modify_Source()
         CodeName='lunar'
     elif grep -Eqi "23.10" /etc/*-release || echo "${Ubuntu_Version}" | grep -Eqi '^23.10'; then
         Ubuntu_Deadline mantic
+    elif grep -Eqi "24.10" /etc/*-release || echo "${Ubuntu_Version}" | grep -Eqi '^24.10'; then
+        Ubuntu_Deadline oracular
+    elif grep -Eqi "25.04" /etc/*-release || echo "${Ubuntu_Version}" | grep -Eqi '^25.04'; then
+        Ubuntu_Deadline plucky
     fi
     if [ "${CodeName}" != "" ]; then
         \cp /etc/apt/sources.list /etc/apt/sources.list.$(date +"%Y%m%d")
@@ -262,6 +269,8 @@ Ubuntu_Deadline()
     xenial_deadline=`date -d "2026-4-30 00:00:00" +%s`
     bionic_deadline=`date -d "2028-7-30 00:00:00" +%s`
     mantic_deadline=`date -d "2024-7-30 00:00:00" +%s`
+    oracular_deadline=`date -d "2025-7-10 00:00:00" +%s`
+    plucky_deadline=`date -d "2026-1-15 00:00:00" +%s`
     cur_time=`date  +%s`
     case "$1" in
         trusty)
@@ -286,6 +295,18 @@ Ubuntu_Deadline()
             if [ ${cur_time} -gt ${mantic_deadline} ]; then
                 echo "${cur_time} > ${mantic_deadline}"
                 Check_Old_Releases_URL mantic
+            fi
+            ;;
+        oracular)
+            if [ ${cur_time} -gt ${oracular_deadline} ]; then
+                echo "${cur_time} > ${oracular_deadline}"
+                Check_Old_Releases_URL oracular
+            fi
+            ;;
+        plucky)
+            if [ ${cur_time} -gt ${plucky_deadline} ]; then
+                echo "${cur_time} > ${plucky_deadline}"
+                Check_Old_Releases_URL plucky
             fi
             ;;
     esac
@@ -319,8 +340,8 @@ Modify_Source()
         if subscription-manager status; then
             Echo_Blue "RHEL subscription exists on the system, skip setting up third-party sources."
             Get_RHEL_Version
-            if echo "${RHEL_Version}" | grep -Eqi "^[89]"; then
-                subscription-manager repos --enable codeready-builder-for-rhel-${RHEL_Version}-${DB_ARCH}-rpms
+            if echo "${RHEL_Version}" | grep -Eqi "^(8|9|10)"; then
+                subscription-manager repos --enable codeready-builder-for-rhel-${RHEL_Ver}-${DB_ARCH}-rpms
             fi
         else
             RHEL_Modify_Source
@@ -355,7 +376,7 @@ CentOS_Dependent()
     fi
 
     Echo_Blue "[+] Yum installing dependent packages..."
-    for packages in make cmake gcc gcc-c++ gcc-g77 kernel-headers glibc-headers flex bison file libtool libtool-libs autoconf patch wget crontabs libjpeg libjpeg-devel libjpeg-turbo-devel libpng libpng-devel libpng10 libpng10-devel gd gd-devel libxml2 libxml2-devel zlib zlib-devel glib2 glib2-devel unzip tar bzip2 bzip2-devel libzip-devel libevent libevent-devel ncurses ncurses-devel curl curl-devel libcurl libcurl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel pcre-devel gettext gettext-devel ncurses-devel gmp-devel pspell-devel unzip libcap diffutils ca-certificates net-tools libc-client-devel psmisc libXpm-devel git-core c-ares-devel libicu-devel libxslt libxslt-devel xz expat-devel libaio-devel rpcgen libtirpc-devel perl cyrus-sasl-devel sqlite-devel oniguruma-devel lsof re2c pkg-config libarchive hostname ncurses-libs numactl-devel libxcrypt libwebp-devel gnutls-devel initscripts iproute libxcrypt-compat git;
+    for packages in make cmake gcc gcc-c++ gcc-g77 kernel-headers glibc-headers flex bison file libtool libtool-libs autoconf patch wget crontabs libjpeg libjpeg-devel libjpeg-turbo-devel libpng libpng-devel libpng10 libpng10-devel gd gd-devel libxml2 libxml2-devel zlib zlib-devel glib2 glib2-devel unzip tar bzip2 bzip2-devel libzip-devel libevent libevent-devel ncurses ncurses-devel curl curl-devel libcurl libcurl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel pcre-devel gettext gettext-devel ncurses-devel gmp-devel pspell-devel unzip libcap diffutils ca-certificates net-tools libc-client-devel psmisc libXpm-devel git-core c-ares-devel libicu-devel libxslt libxslt-devel xz expat-devel libaio-devel rpcgen libtirpc-devel perl cyrus-sasl-devel sqlite-devel oniguruma-devel lsof re2c pkg-config libarchive hostname ncurses-libs numactl-devel libxcrypt libwebp-devel gnutls-devel initscripts iproute libxcrypt-compat;
     do yum -y install $packages; done
 
     yum -y update nss
@@ -372,7 +393,7 @@ CentOS_Dependent()
         dnf install gcc-toolset-10 -y
     fi
 
-    if echo "${CentOS_Version}" | grep -Eqi "^9"; then
+    if echo "${CentOS_Version}" | grep -Eqi "^(9|10)"; then
         crb_source_check=$(yum repolist all | grep -E '^crb' | awk '{print $1}')
 
         if [[ ! -n "$crb_source_check" ]]; then
@@ -387,7 +408,7 @@ gpgkey=https://mirrors.ustc.edu.cn/centos-stream/RPM-GPG-KEY-CentOS-Official
 EOF
         fi
     fi
-    if echo "${CentOS_Version}" | grep -Eqi "^9" || echo "${Alma_Version}" | grep -Eqi "^9" || echo "${Rocky_Version}" | grep -Eqi "^9"; then
+    if echo "${CentOS_Version}" | grep -Eqi "^(9|10)" || echo "${RHEL_Version}" | grep -Eqi "^10" || echo "${Alma_Version}" | grep -Eqi "^(9|10)" || echo "${Rocky_Version}" | grep -Eqi "^(9|10)"; then
         for cs9packages in oniguruma-devel libzip-devel libtirpc-devel libxcrypt-compat;
         do dnf --enablerepo=crb install ${cs9packages} -y; done
         if [[ "${Bin}" != "y" && "${DBSelect}" = "5" ]]; then
@@ -430,7 +451,7 @@ EOF
         fi
     fi
 
-    if [ "${DISTRO}" = "Fedora" ] || echo "${CentOS_Version}" | grep -Eqi "^9" || echo "${Alma_Version}" | grep -Eqi "^9" || echo "${Rocky_Version}" | grep -Eqi "^9" || echo "${Amazon_Version}" | grep -Eqi "^202[3-9]" || echo "${OpenCloudOS_Version}" | grep -Eqi "^9"; then
+    if [ "${DISTRO}" = "Fedora" ] || echo "${CentOS_Version}" | grep -Eqi "^(9|10)" || echo "${RHEL_Version}" | grep -Eqi "^10" || echo "${Alma_Version}" | grep -Eqi "^(9|10)" || echo "${Rocky_Version}" | grep -Eqi "^(9|10)" || echo "${Amazon_Version}" | grep -Eqi "^202[3-9]" || echo "${OpenCloudOS_Version}" | grep -Eqi "^(9|10)"; then
         dnf install chkconfig -y
     fi
 
@@ -457,7 +478,7 @@ Deb_Dependent()
     apt-get -fy install
     export DEBIAN_FRONTEND=noninteractive
     apt-get --no-install-recommends install -y build-essential gcc g++ make
-    for packages in debian-keyring debian-archive-keyring build-essential gcc g++ make cmake autoconf automake re2c wget cron bzip2 libzip-dev libc6-dev bison file rcconf flex m4 gawk less cpp binutils diffutils unzip tar libbz2-dev libncurses5 libncurses5-dev libtool libevent-dev openssl libssl-dev zlibc libsasl2-dev libltdl3-dev libltdl-dev zlib1g zlib1g-dev libbz2-1.0 libglib2.0-0 libglib2.0-dev libpng3 libjpeg-dev libpng-dev libpng12-0 libpng12-dev libkrb5-dev curl libcurl3-gnutls libcurl4-gnutls-dev libcurl4-openssl-dev libpcre3-dev libpq-dev libpq5 gettext libxml2-dev libcap-dev ca-certificates libc-client2007e-dev psmisc patch git libc-ares-dev libicu-dev e2fsprogs libxslt1.1 libxslt1-dev libc-client-dev xz-utils libexpat1-dev libaio-dev libtirpc-dev libsqlite3-dev libonig-dev lsof pkg-config libtinfo-dev libnuma-dev libwebp-dev gnutls-dev iproute2 gzip;
+    for packages in debian-keyring debian-archive-keyring build-essential gcc g++ make cmake autoconf automake re2c wget cron bzip2 libzip-dev libc6-dev bison file rcconf flex bison m4 gawk less cpp binutils diffutils unzip tar bzip2 libbz2-dev libncurses5 libncurses5-dev libtool libevent-dev openssl libssl-dev zlibc libsasl2-dev libltdl3-dev libltdl-dev zlib1g zlib1g-dev libbz2-1.0 libbz2-dev libglib2.0-0 libglib2.0-dev libpng3 libjpeg-dev libpng-dev libpng12-0 libpng12-dev libkrb5-dev curl libcurl3-gnutls libcurl4-gnutls-dev libcurl4-openssl-dev libpcre3-dev libpq-dev libpq5 gettext libpng12-dev libxml2-dev libcap-dev ca-certificates libc-client2007e-dev psmisc patch git libc-ares-dev libicu-dev e2fsprogs libxslt1.1 libxslt1-dev libc-client-dev xz-utils libexpat1-dev libaio-dev libtirpc-dev libsqlite3-dev libonig-dev lsof pkg-config libtinfo-dev libnuma-dev libwebp-dev gnutls-dev iproute2 xz-utils gzip;
     do apt-get --no-install-recommends install -y $packages; done
 }
 
@@ -472,7 +493,7 @@ Check_Download()
     if [ "${Stack}" != "lamp" ]; then
         Download_Files https://nginx.org/download/${Nginx_Ver}.tar.gz ${Nginx_Ver}.tar.gz
     fi
-    if [[ "${DBSelect}" =~ ^[123456]$ ]]; then
+    if [[ "${DBSelect}" =~ ^(1|2|3|4|5|11)$ ]]; then
         if [[ "${Bin}" = "y" && "${DBSelect}" =~ ^[2-4]$ ]]; then
             Mysql_Ver_Short=$(echo ${Mysql_Ver} | sed 's/mysql-//' | cut -d. -f1-2)
             Download_Files https://cdn.mysql.com/Downloads/MySQL-${Mysql_Ver_Short}/${Mysql_Ver}-linux-glibc2.12-${DB_ARCH}.tar.gz ${Mysql_Ver}-linux-glibc2.12-${DB_ARCH}.tar.gz
@@ -485,7 +506,7 @@ Check_Download()
             if [ $? -ne 0 ]; then
                 Download_Files https://cdn.mysql.com/archives/mysql-8.0/${Mysql_Ver}-linux-glibc${mysql8_glibc_ver}-${DB_ARCH}.tar.xz ${Mysql_Ver}-linux-glibc${mysql8_glibc_ver}-${DB_ARCH}.tar.xz
             fi
-        elif [[ "${Bin}" = "y" && "${DBSelect}" = "6" ]]; then
+        elif [[ "${Bin}" = "y" && "${DBSelect}" = "11" ]]; then
             Download_Files https://cdn.mysql.com/Downloads/MySQL-8.4/${Mysql_Ver}-linux-glibc2.17-${DB_ARCH}.tar.xz ${Mysql_Ver}-linux-glibc2.17-${DB_ARCH}.tar.xz
             if [ $? -ne 0 ]; then
                 Download_Files https://cdn.mysql.com/archives/mysql-8.4/${Mysql_Ver}-linux-glibc2.17-${DB_ARCH}.tar.xz ${Mysql_Ver}-linux-glibc2.17-${DB_ARCH}.tar.xz
@@ -497,33 +518,12 @@ Check_Download()
                 Download_Files https://cdn.mysql.com/archives/mysql-${Mysql_Ver_Short}/${Mysql_Ver}.tar.gz ${Mysql_Ver}.tar.gz
             fi
         fi
-    elif [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
-        Mariadb_Version_Short=$(echo ${Mariadb_Ver} | cut -d- -f2)
+    elif [[ "${DBSelect}" =~ ^(6|7|8|9|10|12|13)$ ]]; then
+        Mariadb_Version=$(echo ${Mariadb_Ver} | cut -d- -f2)
         if [ "${Bin}" = "y" ]; then
-            MariaDB_FileName="${Mariadb_Ver}-linux-systemd-${DB_ARCH}"
-            if [ "${country}" = "CN" ]; then
-                Download_Files https://mirrors.ustc.edu.cn/mariadb/${Mariadb_Ver}/bintar-linux-systemd-x86_64/${Mariadb_Ver}-linux-systemd-x86_64.tar.gz ${Mariadb_Ver}-linux-systemd-x86_64.tar.gz
-                if [ $? -ne 0 ]; then
-                    Download_Files https://archive.mariadb.org/${Mariadb_Ver}/bintar-linux-systemd-x86_64/${Mariadb_Ver}-linux-systemd-x86_64.tar.gz ${Mariadb_Ver}-linux-systemd-x86_64.tar.gz
-                fi
-            else
-                Download_Files https://downloads.mariadb.org/rest-api/mariadb/${Mariadb_Version_Short}/${Mariadb_Ver}-linux-systemd-x86_64.tar.gz ${Mariadb_Ver}-linux-systemd-x86_64.tar.gz
-                if [ $? -ne 0 ]; then
-                    Download_Files https://archive.mariadb.org/${Mariadb_Ver}/bintar-linux-systemd-x86_64/${Mariadb_Ver}-linux-systemd-x86_64.tar.gz ${Mariadb_Ver}-linux-systemd-x86_64.tar.gz
-                fi
-            fi
+            Download_Files https://downloads.mariadb.org/rest-api/mariadb/${Mariadb_Version}/${Mariadb_Ver}-linux-systemd-${DB_ARCH}.tar.gz ${Mariadb_Ver}-linux-systemd-${DB_ARCH}.tar.gz
         else
-            if [ "${country}" = "CN" ]; then
-                Download_Files https://mirrors.ustc.edu.cn/mariadb/${Mariadb_Ver}/source/${Mariadb_Ver}.tar.gz ${Mariadb_Ver}.tar.gz
-                if [ $? -ne 0 ]; then
-            	    Download_Files https://archive.mariadb.org/${Mariadb_Ver}/source/${Mariadb_Ver}.tar.gz ${Mariadb_Ver}.tar.gz
-                fi
-            else
-                Download_Files https://downloads.mariadb.org/rest-api/mariadb/${Mariadb_Version_Short}/${Mariadb_Ver}.tar.gz ${Mariadb_Ver}.tar.gz
-                if [ $? -ne 0 ]; then
-            	    Download_Files https://archive.mariadb.org/${Mariadb_Ver}/source/${Mariadb_Ver}.tar.gz ${Mariadb_Ver}.tar.gz
-                fi
-            fi
+            Download_Files https://downloads.mariadb.org/rest-api/mariadb/${Mariadb_Version}/${Mariadb_Ver}.tar.gz ${Mariadb_Ver}.tar.gz
         fi
     fi
     Download_Files https://www.php.net/distributions/${Php_Ver}.tar.bz2 ${Php_Ver}.tar.bz2
@@ -631,7 +631,7 @@ Install_Mhash()
 
 Install_Freetype()
 {
-    if echo "${Ubuntu_Version}" | grep -Eqi "^1[89]\.|2[0-9]\." || echo "${Mint_Version}" | grep -Eqi "^19|2[0-9]" || echo "${Deepin_Version}" | grep -Eqi "^15\.[7-9]|15.1[0-9]|1[6-9]|2[0-9]" || echo "${Debian_Version}" | grep -Eqi "^9|1[0-9]" || echo "${Raspbian_Version}" | grep -Eqi "^9|1[0-9]" || echo "${Kali_Version}" | grep -Eqi "^202[0-9]" || echo "${UOS_Version}" | grep -Eqi "^2[0-9]" || echo "${CentOS_Version}" | grep -Eqi "^8|9" || echo "${RHEL_Version}" | grep -Eqi "^8|9" || echo "${Oracle_Version}" | grep -Eqi "^8|9" || echo "${Fedora_Version}" | grep -Eqi "^3[0-9]|29" || echo "${Rocky_Version}" | grep -Eqi "^8|9" || echo "${Alma_Version}" | grep -Eqi "^8|9" || echo "${openEuler_Version}" | grep -Eqi "^2[0-9]" || echo "${Anolis_Version}" | grep -Eqi "^8|9" || echo "${Kylin_Version}" | grep -Eqi "^V1[0-9]" || echo "${Amazon_Version}" | grep -Eqi "^202[3-9]" || echo "${OpenCloudOS_Version}" | grep -Eqi "^8|9|23" || echo "${HCE_Version}" | grep -Eqi "^2\.[0-9]"; then
+    if echo "${Ubuntu_Version}" | grep -Eqi "^1[89]\.|2[0-9]\." || echo "${Mint_Version}" | grep -Eqi "^19|2[0-9]" || echo "${Deepin_Version}" | grep -Eqi "^15\.[7-9]|15.1[0-9]|1[6-9]|2[0-9]" || echo "${Debian_Version}" | grep -Eqi "^9|1[0-9]" || echo "${Raspbian_Version}" | grep -Eqi "^9|1[0-9]" || echo "${Kali_Version}" | grep -Eqi "^202[0-9]" || echo "${UOS_Version}" | grep -Eqi "^2[0-9]" || echo "${CentOS_Version}" | grep -Eqi "^(8|9|10)" || echo "${RHEL_Version}" | grep -Eqi "^(8|9|10)" || echo "${Oracle_Version}" | grep -Eqi "^(8|9|10)" || echo "${Fedora_Version}" | grep -Eqi "^3[0-9]|29" || echo "${Rocky_Version}" | grep -Eqi "^(8|9|10)" || echo "${Alma_Version}" | grep -Eqi "^(8|9|10)" || echo "${openEuler_Version}" | grep -Eqi "^2[0-9]" || echo "${Anolis_Version}" | grep -Eqi "^(8|9|10)" || echo "${Kylin_Version}" | grep -Eqi "^V1[0-9]" || echo "${Amazon_Version}" | grep -Eqi "^202[3-9]" || echo "${OpenCloudOS_Version}" | grep -Eqi "^(8|9|10|23)" || echo "${HCE_Version}" | grep -Eqi "^2\.[0-9]"; then
         Download_Files https://download.savannah.gnu.org/releases/freetype/${Freetype_New_Ver}.tar.xz ${Freetype_New_Ver}.tar.xz
         Echo_Blue "[+] Installing ${Freetype_New_Ver}"
         Tar_Cd ${Freetype_New_Ver}.tar.xz ${Freetype_New_Ver}
@@ -817,26 +817,48 @@ Install_Openssl()
 
 Install_Openssl_New()
 {
-    if openssl version | grep -vEqi "OpenSSL 1.1.1*"; then
-        if [ ! -s /usr/local/openssl1.1.1/bin/openssl ] || /usr/local/openssl1.1.1/bin/openssl version | grep -v 'OpenSSL 1.1.1'; then
+    if openssl version | grep -Eqi "OpenSSL 3."; then
+        apache_with_ssl='--with-ssl'
+    else
+        if [ ! -s /usr/local/openssl3/bin/openssl ] || /usr/local/openssl3/bin/openssl version | grep -v 'OpenSSL 3'; then
             Echo_Blue "[+] Installing ${Openssl_New_Ver}"
             cd ${cur_dir}/src
             Download_Files https://www.openssl.org/source/${Openssl_New_Ver}.tar.gz ${Openssl_New_Ver}.tar.gz
             [[ -d "${Openssl_New_Ver}" ]] && rm -rf ${Openssl_New_Ver}
             Tar_Cd ${Openssl_New_Ver}.tar.gz ${Openssl_New_Ver}
-            ./config enable-weak-ssl-ciphers -fPIC --prefix=/usr/local/openssl1.1.1 --openssldir=/usr/local/openssl1.1.1
+            ./config -fPIC --prefix=/usr/local/openssl3 --openssldir=/usr/local/openssl3
             make depend
             Make_Install
-            ln -sf /usr/local/openssl1.1.1/lib/libcrypto.so.1.1 /usr/lib/
-            ln -sf /usr/local/openssl1.1.1/lib/libssl.so.1.1 /usr/lib/
             cd ${cur_dir}/src/
             rm -rf ${cur_dir}/src/${Openssl_New_Ver}
         fi
         ldconfig
-        apache_with_ssl='--with-ssl=/usr/local/openssl1.1.1'
-    else
-        apache_with_ssl='--with-ssl'
+        apache_with_ssl='--with-ssl=/usr/local/openssl3'
     fi
+}
+
+Install_Openssl_Compat()
+{
+    if [ ! -s /usr/local/openssl1.1.1/bin/openssl ] || /usr/local/openssl1.1.1/bin/openssl version | grep -v 'OpenSSL 1.1.1'; then
+        Echo_Blue "[+] Installing ${Openssl_Compat_Ver}"
+        cd ${cur_dir}/src
+        Download_Files https://www.openssl.org/source/old/1.1.1/${Openssl_Compat_Ver}.tar.gz ${Openssl_Compat_Ver}.tar.gz
+        [[ -d "${Openssl_Compat_Ver}" ]] && rm -rf ${Openssl_Compat_Ver}
+        Tar_Cd ${Openssl_Compat_Ver}.tar.gz ${Openssl_Compat_Ver}
+        ./config -fPIC --prefix=/usr/local/openssl1.1.1 --openssldir=/usr/local/openssl1.1.1
+        make depend
+        Make_Install
+        if [ -s /usr/local/openssl1.1.1/lib/libcrypto.so.1.1 ]; then
+            ln -sf /usr/local/openssl1.1.1/lib/libcrypto.so.1.1 /usr/lib/
+            ln -sf /usr/local/openssl1.1.1/lib/libssl.so.1.1 /usr/lib/
+        elif [ -s /usr/local/openssl1.1.1/lib64/libcrypto.so.1.1 ]; then
+            ln -sf /usr/local/openssl1.1.1/lib64/libcrypto.so.1.1 /usr/lib/
+            ln -sf /usr/local/openssl1.1.1/lib64/libssl.so.1.1 /usr/lib/
+        fi
+        cd ${cur_dir}/src/
+        rm -rf ${cur_dir}/src/${Openssl_Compat_Ver}
+    fi
+    ldconfig
 }
 
 Install_Nghttp2()

@@ -1,5 +1,32 @@
 更新记录
 
+2026年5月6日发布LNMP 2.3正式版
+
+    增加PHP 8.4、PHP 8.5安装、多PHP安装、升级和虚拟主机选择支持；
+    增加MariaDB 11.4 LTS、MariaDB 11.8 LTS选项；
+    默认数据库调整为MySQL 8.4 LTS，默认PHP保持为PHP 8.3；
+    升级Nginx至1.30.0、OpenSSL至3.5.5、nghttp2至1.65.0；
+    升级MySQL 8.0、MySQL 8.4、MariaDB 10.6、MariaDB 10.11等数据库组件版本；
+    升级PHP 8.1、PHP 8.2、PHP 8.3、phpMyAdmin、Apache、Redis、memcached、Swoole等组件版本；
+    增加RHEL 10/CentOS Stream 10兼容处理，补充Ubuntu 24.10、25.04 EOL源处理；
+    优化OpenSSL 3与旧MySQL源码编译兼容逻辑，拆分现代OpenSSL与OpenSSL 1.1.1兼容层；
+    优化下载流程，默认不跳过TLS证书校验，并支持src/checksums.sha256的SHA256校验；
+    SSL模板默认仅启用TLSv1.2/TLSv1.3；
+    修复多处菜单、版本输出、Apache PHP模块判断和MariaDB 11.x状态显示问题；
+    其他一些安全性、兼容性和可维护性优化及调整......
+
+2024年4月2日发布LNMP 2.2正式版
+
+    增加PHP 8.4支持；
+    增加Caddy支持；
+    更新Mysql为8.4.4；
+    修复了Mysql旧版本源失效；
+    添加Ubuntu 24.04支持；
+    优化Nginx安装配置效率；
+    优化PHP对Redis的支持依赖；
+    更新诸多软件版本；
+    其他一些功能优化及调整......
+
 LNMP 2.1
 
 增加PHP 8.3支持；

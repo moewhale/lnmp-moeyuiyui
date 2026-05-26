@@ -1,30 +1,30 @@
 #!/usr/bin/env bash
 
-DB_Info=('MySQL 5.1.73' 'MySQL 5.5.62' 'MySQL 5.6.51' 'MySQL 5.7.44' 'MySQL 8.0.43' 'MySQL 8.4.6' 'MariaDB 5.5.68' 'MariaDB 10.4.34' 'MariaDB 10.5.29' 'MariaDB 10.6.25' 'MariaDB 10.11.16' 'MariaDB 11.4.10' 'MariaDB 11.8.6')
+DB_Info=('MySQL 5.1.73' 'MySQL 5.5.62' 'MySQL 5.6.51' 'MySQL 5.7.44' 'MySQL 8.0.46' 'MariaDB 5.5.68' 'MariaDB 10.4.33' 'MariaDB 10.5.24' 'MariaDB 10.6.25' 'MariaDB 10.11.16' 'MySQL 8.4.8 LTS' 'MariaDB 11.4.10 LTS' 'MariaDB 11.8.6 LTS')
 PHP_Info=('PHP 5.2.17' 'PHP 5.3.29' 'PHP 5.4.45' 'PHP 5.5.38' 'PHP 5.6.40' 'PHP 7.0.33' 'PHP 7.1.33' 'PHP 7.2.34' 'PHP 7.3.33' 'PHP 7.4.33' 'PHP 8.0.30' 'PHP 8.1.34' 'PHP 8.2.31' 'PHP 8.3.31' 'PHP 8.4.21' 'PHP 8.5.6')
-Apache_Info=('Apache 2.2.34' 'Apache 2.4.65')
+Apache_Info=('Apache 2.2.34' 'Apache 2.4.67')
 
 Database_Selection()
 {
 #which MySQL Version do you want to install?
     if [ -z ${DBSelect} ]; then
-        DBSelect="2"
+        DBSelect="11"
         Echo_Yellow "You have 13 options for your DataBase install."
         echo "1: Install ${DB_Info[0]}"
-        echo "2: Install ${DB_Info[1]} (Default)"
+        echo "2: Install ${DB_Info[1]} (Legacy)"
         echo "3: Install ${DB_Info[2]}"
         echo "4: Install ${DB_Info[3]}"
-        echo "5: Install ${DB_Info[4]}"
+        echo "5: Install ${DB_Info[4]} (Legacy/EOL)"
         echo "6: Install ${DB_Info[5]}"
         echo "7: Install ${DB_Info[6]}"
         echo "8: Install ${DB_Info[7]}"
         echo "9: Install ${DB_Info[8]}"
         echo "10: Install ${DB_Info[9]}"
-        echo "11: Install ${DB_Info[10]}"
+        echo "11: Install ${DB_Info[10]} (Default)"
         echo "12: Install ${DB_Info[11]}"
         echo "13: Install ${DB_Info[12]}"
         echo "0: DO NOT Install MySQL/MariaDB"
-        read -p "Enter your choice (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ,12 ,13 or 0): " DBSelect
+        read -p "Enter your choice (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 or 0): " DBSelect
     fi
 
     case "${DBSelect}" in
@@ -140,7 +140,7 @@ Database_Selection()
         ;;
     6)
         echo "You will install ${DB_Info[5]}"
-        if [[ "${DB_ARCH}" = "x86_64" || "${DB_ARCH}" = "i686" || "${DB_ARCH}" = "aarch64" ]]; then
+        if [[ "${DB_ARCH}" = "x86_64" || "${DB_ARCH}" = "i686" ]]; then
             if [ -z ${Bin} ]; then
                 read -p "Using Generic Binaries [y/n]: " Bin
             fi
@@ -227,7 +227,7 @@ Database_Selection()
         ;;
     9)
         echo "You will install ${DB_Info[8]}"
-        if [[ "${DB_ARCH}" = "x86_64" || "${DB_ARCH}" = "i686" ]]; then
+        if [[ "${DB_ARCH}" = "x86_64" ]]; then
             if [ -z ${Bin} ]; then
                 read -p "Using Generic Binaries [y/n]: " Bin
             fi
@@ -285,7 +285,7 @@ Database_Selection()
         ;;
     11)
         echo "You will install ${DB_Info[10]}"
-        if [[ "${DB_ARCH}" = "x86_64" ]]; then
+        if [[ "${DB_ARCH}" = "x86_64" || "${DB_ARCH}" = "i686" || "${DB_ARCH}" = "aarch64" ]]; then
             if [ -z ${Bin} ]; then
                 read -p "Using Generic Binaries [y/n]: " Bin
             fi
@@ -314,7 +314,7 @@ Database_Selection()
         ;;
     12)
         echo "You will install ${DB_Info[11]}"
-        if [[ "${DB_ARCH}" = "x86_64" ]]; then
+        if [[ "${DB_ARCH}" = "x86_64" || "${DB_ARCH}" = "i686" || "${DB_ARCH}" = "aarch64" ]]; then
             if [ -z ${Bin} ]; then
                 read -p "Using Generic Binaries [y/n]: " Bin
             fi
@@ -343,7 +343,7 @@ Database_Selection()
         ;;
     13)
         echo "You will install ${DB_Info[12]}"
-        if [[ "${DB_ARCH}" = "x86_64" ]]; then
+        if [[ "${DB_ARCH}" = "x86_64" || "${DB_ARCH}" = "i686" || "${DB_ARCH}" = "aarch64" ]]; then
             if [ -z ${Bin} ]; then
                 read -p "Using Generic Binaries [y/n]: " Bin
             fi
@@ -374,20 +374,20 @@ Database_Selection()
         echo "Do not install MySQL/MariaDB!"
         ;;
     *)
-        echo "No input,You will install ${DB_Info[1]}"
-        DBSelect="2"
+        echo "No input,You will install ${DB_Info[10]}"
+        DBSelect="11"
     esac
 
-    if [ "${Bin}" != "y" ] && [[ "${DBSelect}" =~ ^[5-6]|[8-9]|1[0-3]$ ]] && [ $(awk '/MemTotal/ {printf( "%d\n", $2 / 1024 )}' /proc/meminfo) -le 1024 ]; then
-        echo "Memory less than 1GB, can't install MySQL 8.0 or MairaDB 10.3+!"
+    if [ "${Bin}" != "y" ] && [[ "${DBSelect}" =~ ^(5|[7-9]|1[0-3])$ ]] && [ $(awk '/MemTotal/ {printf( "%d\n", $2 / 1024 )}' /proc/meminfo) -le 1024 ]; then
+        echo "Memory less than 1GB, can't install MySQL 8.x or MariaDB 10.3+!"
         exit 1
     fi
 
-    if [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
+    if [[ "${DBSelect}" =~ ^(6|7|8|9|10|12|13)$ ]]; then
         MySQL_Bin="/usr/local/mariadb/bin/mysql"
         MySQL_Config="/usr/local/mariadb/bin/mysql_config"
         MySQL_Dir="/usr/local/mariadb"
-    elif [[ "${DBSelect}" =~ ^[123456]$ ]]; then
+    elif [[ "${DBSelect}" =~ ^(1|2|3|4|5|11)$ ]]; then
         MySQL_Bin="/usr/local/mysql/bin/mysql"
         MySQL_Config="/usr/local/mysql/bin/mysql_config"
         MySQL_Dir="/usr/local/mysql"
@@ -438,13 +438,13 @@ PHP_Selection()
     if [ -z ${PHPSelect} ]; then
         echo "==========================="
 
-        PHPSelect="4"
-        Echo_Yellow "You have 9 options for your PHP install."
+        PHPSelect="14"
+        Echo_Yellow "You have 16 options for your PHP install."
         echo "1: Install ${PHP_Info[0]}"
         echo "2: Install ${PHP_Info[1]}"
         echo "3: Install ${PHP_Info[2]}"
         echo "4: Install ${PHP_Info[3]}"
-        echo "5: Install ${PHP_Info[4]} (Default)"
+        echo "5: Install ${PHP_Info[4]} (Legacy)"
         echo "6: Install ${PHP_Info[5]}"
         echo "7: Install ${PHP_Info[6]}"
         echo "8: Install ${PHP_Info[7]}"
@@ -453,10 +453,10 @@ PHP_Selection()
         echo "11: Install ${PHP_Info[10]}"
         echo "12: Install ${PHP_Info[11]}"
         echo "13: Install ${PHP_Info[12]}"
-        echo "14: Install ${PHP_Info[13]}"
+        echo "14: Install ${PHP_Info[13]} (Default)"
         echo "15: Install ${PHP_Info[14]}"
         echo "16: Install ${PHP_Info[15]}"
-        read -p "Enter your choice (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 or 16): " PHPSelect
+        read -p "Enter your choice (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16): " PHPSelect
     fi
 
     case "${PHPSelect}" in
@@ -513,8 +513,8 @@ PHP_Selection()
         echo "You will install ${PHP_Info[15]}"
         ;;
     *)
-        echo "No input,You will install ${PHP_Info[4]}"
-        PHPSelect="5"
+        echo "No input,You will install ${PHP_Info[13]}"
+        PHPSelect="14"
     esac
 }
 
@@ -789,6 +789,9 @@ Get_RHEL_Version()
         elif grep -Eqi "release 9." /etc/redhat-release; then
             echo "Current Version: RHEL Ver 9"
             RHEL_Ver='9'
+        elif grep -Eqi "release 10." /etc/redhat-release; then
+            echo "Current Version: RHEL Ver 10"
+            RHEL_Ver='10'
         fi
         RHEL_Version="$(cat /etc/redhat-release | sed 's/.*release\ //' | sed 's/\ .*//')"
     fi
@@ -875,9 +878,9 @@ Print_APP_Ver()
         echo "${Nginx_Ver}"
     fi
 
-    if [[ "${DBSelect}" =~ ^[123456]$ ]]; then
+    if [[ "${DBSelect}" =~ ^(1|2|3|4|5|11)$ ]]; then
         echo "${Mysql_Ver}"
-    elif [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
+    elif [[ "${DBSelect}" =~ ^(6|7|8|9|10|12|13)$ ]]; then
         echo "${Mariadb_Ver}"
     elif [ "${DBSelect}" = "0" ]; then
         echo "Do not install MySQL/MariaDB!"
@@ -905,9 +908,9 @@ Print_APP_Ver()
     if [ "${Enable_Nginx_Lua}" = "y" ]; then
         echo "enable Nginx Lua."
     fi
-    if [[ "${DBSelect}" =~ ^[123456]$ ]]; then
+    if [[ "${DBSelect}" =~ ^(1|2|3|4|5|11)$ ]]; then
         echo "Database Directory: ${MySQL_Data_Dir}"
-    elif [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
+    elif [[ "${DBSelect}" =~ ^(6|7|8|9|10|12|13)$ ]]; then
         echo "Database Directory: ${MariaDB_Data_Dir}"
     elif [ "${DBSelect}" = "0" ]; then
         echo "Do not install MySQL/MariaDB!"
@@ -972,13 +975,13 @@ Remove_StartUp()
 
 Check_CMPT()
 {
-    if [[ "${DBSelect}" = "5" && "${Bin}" != "y" ]]; then
+    if [[ "${DBSelect}" =~ ^(5|11)$ && "${Bin}" != "y" ]]; then
         if echo "${Ubuntu_Version}" | grep -Eqi "^1[0-7]\." || echo "${Debian_Version}" | grep -Eqi "^[4-8]" || echo "${Raspbian_Version}" | grep -Eqi "^[4-8]" || echo "${CentOS_Version}" | grep -Eqi "^[4-7]"  || echo "${RHEL_Version}" | grep -Eqi "^[4-7]" || echo "${Fedora_Version}" | grep -Eqi "^2[0-3]"; then
-            Echo_Red "MySQL 8.0 please use latest linux distributions!"
+            Echo_Red "MySQL 8.* please use latest linux distributions!"
             exit 1
         fi
     fi
-    if [[ "${PHPSelect}" =~ ^1[0-6]$ ]]; then
+    if [[ "${PHPSelect}" =~ ^(10|1[1-6])$ ]]; then
         if echo "${Ubuntu_Version}" | grep -Eqi "^1[0-7]\." || echo "${Debian_Version}" | grep -Eqi "^[4-8]" || echo "${Raspbian_Version}" | grep -Eqi "^[4-8]" || echo "${CentOS_Version}" | grep -Eqi "^[4-6]"  || echo "${RHEL_Version}" | grep -Eqi "^[4-6]" || echo "${Fedora_Version}" | grep -Eqi "^2[0-3]"; then
             Echo_Red "PHP 7.4 and PHP 8.* please use latest linux distributions!"
             exit 1
@@ -1038,8 +1041,8 @@ Check_Stack()
 
 Check_DB()
 {
-    if [[ -s /usr/local/mariadb/bin/mariadb && -s /usr/local/mariadb/bin/mysqld_safe && -s /etc/my.cnf ]]; then
-        MySQL_Bin="/usr/local/mariadb/bin/mariadb"
+    if [[ -s /usr/local/mariadb/bin/mysql && -s /usr/local/mariadb/bin/mysqld_safe && -s /etc/my.cnf ]]; then
+        MySQL_Bin="/usr/local/mariadb/bin/mysql"
         MySQL_Config="/usr/local/mariadb/bin/mysql_config"
         MySQL_Dir="/usr/local/mariadb"
         Is_MySQL="n"

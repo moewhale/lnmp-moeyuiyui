@@ -17,7 +17,7 @@ Install_Multiplephp()
     echo "==========================="
 
     PHPSelect=""
-    Echo_Yellow "You have 9 options for your PHP install."
+    Echo_Yellow "You have 16 options for your PHP install."
     echo "1: Install ${PHP_Info[0]}"
     echo "2: Install ${PHP_Info[1]}"
     echo "3: Install ${PHP_Info[2]}"
@@ -32,7 +32,9 @@ Install_Multiplephp()
     echo "12: Install ${PHP_Info[11]}"
     echo "13: Install ${PHP_Info[12]}"
     echo "14: Install ${PHP_Info[13]}"
-    read -p "Enter your choice (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 or 14): " PHPSelect
+    echo "15: Install ${PHP_Info[14]}"
+    echo "16: Install ${PHP_Info[15]}"
+    read -p "Enter your choice (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 or 16): " PHPSelect
 
     case "${PHPSelect}" in
     1)
@@ -96,6 +98,14 @@ Install_Multiplephp()
         echo "You will install ${PHP_Info[13]}"
         MPHP_Path='/usr/local/php8.3'
         ;;
+    15)
+        echo "You will install ${PHP_Info[14]}"
+        MPHP_Path='/usr/local/php8.4'
+        ;;
+    16)
+        echo "You will install ${PHP_Info[15]}"
+        MPHP_Path='/usr/local/php8.5'
+        ;;
     *)
         echo "No enter,You Must enter one option."
         exit 1
@@ -141,8 +151,10 @@ Install_Multiplephp()
         Install_MPHP8.2 2>&1 | tee /root/install-mphp8.2.log
     elif [ "${PHPSelect}" = "14" ]; then
         Install_MPHP8.3 2>&1 | tee /root/install-mphp8.3.log
-    elif [ "${PHPSelect}" = "14" ]; then
-        Install_MPHP8.3 2>&1 | tee /root/install-mphp8.4.log
+    elif [ "${PHPSelect}" = "15" ]; then
+        Install_MPHP8.4 2>&1 | tee /root/install-mphp8.4.log
+    elif [ "${PHPSelect}" = "16" ]; then
+        Install_MPHP8.5 2>&1 | tee /root/install-mphp8.5.log
     fi
 }
 
@@ -1377,7 +1389,7 @@ EOF
     fi
 }
 
-Install_MPHP8.4()
+Install_MPHP8x()
 {
     lnmp stop
 
@@ -1394,7 +1406,6 @@ Install_MPHP8.4()
     mkdir -p ${MPHP_Path}/{etc,conf.d}
     \cp php.ini-production ${MPHP_Path}/etc/php.ini
 
-    # php extensions
     echo "Modify php.ini......"
     sed -i 's/post_max_size =.*/post_max_size = 50M/g' ${MPHP_Path}/etc/php.ini
     sed -i 's/upload_max_filesize =.*/upload_max_filesize = 50M/g' ${MPHP_Path}/etc/php.ini
@@ -1405,7 +1416,7 @@ Install_MPHP8.4()
     sed -i 's/disable_functions =.*/disable_functions = passthru,exec,system,chroot,chgrp,chown,shell_exec,proc_open,proc_get_status,popen,ini_alter,ini_restore,dl,openlog,syslog,readlink,symlink,popepassthru,stream_socket_server/g' ${MPHP_Path}/etc/php.ini
 
     cd ${cur_dir}/src
-    echo "Install ZendGuardLoader for PHP 8.4..."
+    echo "Install ZendGuardLoader for ${Php_Ver}..."
     echo "unavailable now."
 
     echo "Creating new php-fpm configure file..."
@@ -1416,7 +1427,7 @@ error_log = ${MPHP_Path}/var/log/php-fpm.log
 log_level = notice
 
 [www]
-listen = /tmp/php-cgi8.4.sock
+listen = /tmp/php-cgi${MPHP_Short_Ver}.sock
 listen.backlog = -1
 listen.allowed_clients = 127.0.0.1
 listen.owner = www
@@ -1435,13 +1446,13 @@ slowlog = var/log/slow.log
 EOF
 
     echo "Copy php-fpm init.d file..."
-    \cp ${cur_dir}/src/${Php_Ver}/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm8.4
-    chmod +x /etc/init.d/php-fpm8.4
-    sed -i 's@# Provides:          php-fpm@# Provides:          php-fpm8.4@g' /etc/init.d/php-fpm8.4
+    \cp ${cur_dir}/src/${Php_Ver}/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm${MPHP_Short_Ver}
+    chmod +x /etc/init.d/php-fpm${MPHP_Short_Ver}
+    sed -i "s@# Provides:          php-fpm@# Provides:          php-fpm${MPHP_Short_Ver}@g" /etc/init.d/php-fpm${MPHP_Short_Ver}
 
-    StartUp php-fpm8.4
+    StartUp php-fpm${MPHP_Short_Ver}
 
-    \cp ${cur_dir}/conf/enable-php8.4.conf /usr/local/nginx/conf/enable-php8.4.conf
+    \cp ${cur_dir}/conf/enable-php${MPHP_Short_Ver}.conf /usr/local/nginx/conf/enable-php${MPHP_Short_Ver}.conf
 
     sleep 2
 
@@ -1455,6 +1466,18 @@ EOF
         echo "==========================================="
     else
         rm -rf ${MPHP_Path}
-        Echo_Red "Failed to install ${Php_Ver}, you can download /root/install-mphp8.4.log from your server, and upload install-mphp8.4.log to LNMP Forum."
+        Echo_Red "Failed to install ${Php_Ver}, you can download /root/install-mphp${MPHP_Short_Ver}.log from your server, and upload install-mphp${MPHP_Short_Ver}.log to LNMP Forum."
     fi
+}
+
+Install_MPHP8.4()
+{
+    MPHP_Short_Ver="8.4"
+    Install_MPHP8x
+}
+
+Install_MPHP8.5()
+{
+    MPHP_Short_Ver="8.5"
+    Install_MPHP8x
 }

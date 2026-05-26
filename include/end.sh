@@ -42,11 +42,11 @@ Add_LNMP_Startup()
     chmod +x /bin/lnmp
     StartUp nginx
     StartOrStop start nginx
-    if [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
+    if [[ "${DBSelect}" =~ ^(6|7|8|9|10|12|13)$ ]]; then
         StartUp mariadb
         StartOrStop start mariadb
         sed -i 's#/etc/init.d/mysql#/etc/init.d/mariadb#' /bin/lnmp
-    elif [[ "${DBSelect}" =~ ^[123456]$ ]]; then
+    elif [[ "${DBSelect}" =~ ^(1|2|3|4|5|11)$ ]]; then
         StartUp mysql
         StartOrStop start mysql
     elif [ "${DBSelect}" = "0" ]; then
@@ -66,11 +66,11 @@ Add_LNMPA_Startup()
     chmod +x /bin/lnmp
     StartUp nginx
     StartOrStop start nginx
-    if [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
+    if [[ "${DBSelect}" =~ ^(6|7|8|9|10|12|13)$ ]]; then
         StartUp mariadb
         StartOrStop start mariadb
         sed -i 's#/etc/init.d/mysql#/etc/init.d/mariadb#' /bin/lnmp
-    elif [[ "${DBSelect}" =~ ^[123456]$ ]]; then
+    elif [[ "${DBSelect}" =~ ^(1|2|3|4|5|11)$ ]]; then
         StartUp mysql
         StartOrStop start mysql
     elif [ "${DBSelect}" = "0" ]; then
@@ -87,11 +87,11 @@ Add_LAMP_Startup()
     chmod +x /bin/lnmp
     StartUp httpd
     StartOrStop start httpd
-    if [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
+    if [[ "${DBSelect}" =~ ^(6|7|8|9|10|12|13)$ ]]; then
         StartUp mariadb
         StartOrStop start mariadb
         sed -i 's#/etc/init.d/mysql#/etc/init.d/mariadb#' /bin/lnmp
-    elif [[ "${DBSelect}" =~ ^[123456]$ ]]; then
+    elif [[ "${DBSelect}" =~ ^(1|2|3|4|5|11)$ ]]; then
         StartUp mysql
         StartOrStop start mysql
     elif [ "${DBSelect}" = "0" ]; then
@@ -115,14 +115,14 @@ Check_Nginx_Files()
 Check_DB_Files()
 {
     isDB=""
-    if [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
+    if [[ "${DBSelect}" =~ ^(6|7|8|9|10|12|13)$ ]]; then
         if [[ -s /usr/local/mariadb/bin/mysql && -s /usr/local/mariadb/bin/mysqld_safe && -s /etc/my.cnf ]]; then
             Echo_Green "MariaDB: OK"
             isDB="ok"
         else
             Echo_Red "Error: MariaDB install failed."
         fi
-    elif [[ "${DBSelect}" =~ ^[123456]$ ]]; then
+    elif [[ "${DBSelect}" =~ ^(1|2|3|4|5|11)$ ]]; then
         if [[ -s /usr/local/mysql/bin/mysql && -s /usr/local/mysql/bin/mysqld_safe && -s /etc/my.cnf ]]; then
             Echo_Green "MySQL: OK"
             isDB="ok"
@@ -159,7 +159,7 @@ Check_PHP_Files()
 Check_Apache_Files()
 {
     isApache=""
-    if [[ "${PHPSelect}" =~ ^[6789]|10$ ]]; then
+    if [[ "${PHPSelect}" =~ ^([6-9]|10)$ ]]; then
         if [[ -s /usr/local/apache/bin/httpd && -s /usr/local/apache/modules/libphp7.so && -s /usr/local/apache/conf/httpd.conf ]]; then
             Echo_Green "Apache: OK"
             isApache="ok"
@@ -186,9 +186,9 @@ Check_Apache_Files()
 Clean_DB_Src_Dir()
 {
     echo "Clean database src directory..."
-    if [[ "${DBSelect}" =~ ^[123456]$ ]]; then
+    if [[ "${DBSelect}" =~ ^(1|2|3|4|5|11)$ ]]; then
         rm -rf ${cur_dir}/src/${Mysql_Ver}
-    elif [[ "${DBSelect}" =~ ^[789]|1[0-3]$ ]]; then
+    elif [[ "${DBSelect}" =~ ^(6|7|8|9|10|12|13)$ ]]; then
         rm -rf ${cur_dir}/src/${Mariadb_Ver}
     fi
     if [[ "${DBSelect}" = "4" ]]; then
@@ -208,14 +208,15 @@ Clean_Web_Src_Dir()
 {
     echo "Clean Web Server src directory..."
     if [ "${Stack}" = "lnmp" ]; then
-        rm -rf ${cur_dir}/src/${Nginx_Ver}
+        rm -rf ${cur_dir}/src/${Nginx_Ver}*
     elif [ "${Stack}" = "lnmpa" ]; then
-        rm -rf ${cur_dir}/src/${Nginx_Ver}
+        rm -rf ${cur_dir}/src/${Nginx_Ver}*
         rm -rf ${cur_dir}/src/${Apache_Ver}
     elif [ "${Stack}" = "lamp" ]; then
         rm -rf ${cur_dir}/src/${Apache_Ver}
     fi
     [[ -d "${cur_dir}/src/${Openssl_Ver}" ]] && rm -rf ${cur_dir}/src/${Openssl_Ver}
+    [[ -d "${cur_dir}/src/${Openssl_Compat_Ver}" ]] && rm -rf ${cur_dir}/src/${Openssl_Compat_Ver}
     [[ -d "${cur_dir}/src/${Openssl_New_Ver}" ]] && rm -rf ${cur_dir}/src/${Openssl_New_Ver}
     [[ -d "${cur_dir}/src/${Pcre_Ver}" ]] && rm -rf ${cur_dir}/src/${Pcre_Ver}
     [[ -d "${cur_dir}/src/${LuaNginxModule}" ]] && rm -rf ${cur_dir}/src/${LuaNginxModule}

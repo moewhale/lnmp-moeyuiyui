@@ -224,7 +224,7 @@ EOF
 
 Multiple_PHP_Select()
 {
-    if [[ ! -s /usr/local/php5.2/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php5.2.conf ]] && [[ ! -s /usr/local/php5.3/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php5.3.conf ]] && [[ ! -s /usr/local/php5.4/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php5.4.conf ]] && [[ ! -s /usr/local/php5.5/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php5.5.conf ]] && [[ ! -s /usr/local/php5.6/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php5.6.conf ]] && [[ ! -s /usr/local/php7.0/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php7.0.conf ]] && [[ ! -s /usr/local/php7.1/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php7.1.conf ]] && [[ ! -s /usr/local/php7.2/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php7.2.conf ]] && [[ ! -s /usr/local/php7.3/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php7.3.conf ]] && [[ ! -s /usr/local/php7.4/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php7.4.conf ]] && [[ ! -s /usr/local/php8.0/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php8.0.conf ]] && [[ ! -s /usr/local/php8.1/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php8.1.conf ]] && [[ ! -s /usr/local/php8.2/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php8.2.conf ]]; then
+    if [[ ! -s /usr/local/php5.2/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php5.2.conf ]] && [[ ! -s /usr/local/php5.3/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php5.3.conf ]] && [[ ! -s /usr/local/php5.4/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php5.4.conf ]] && [[ ! -s /usr/local/php5.5/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php5.5.conf ]] && [[ ! -s /usr/local/php5.6/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php5.6.conf ]] && [[ ! -s /usr/local/php7.0/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php7.0.conf ]] && [[ ! -s /usr/local/php7.1/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php7.1.conf ]] && [[ ! -s /usr/local/php7.2/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php7.2.conf ]] && [[ ! -s /usr/local/php7.3/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php7.3.conf ]] && [[ ! -s /usr/local/php7.4/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php7.4.conf ]] && [[ ! -s /usr/local/php8.0/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php8.0.conf ]] && [[ ! -s /usr/local/php8.1/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php8.1.conf ]] && [[ ! -s /usr/local/php8.2/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php8.2.conf ]] && [[ ! -s /usr/local/php8.3/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php8.3.conf ]] && [[ ! -s /usr/local/php8.4/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php8.4.conf ]] && [[ ! -s /usr/local/php8.5/sbin/php-fpm && ! -s /usr/local/nginx/conf/enable-php8.5.conf ]]; then
         if [ "${enable_pathinfo}" == "y" ]; then
             include_enable_php="include enable-php-pathinfo.conf;"
         else
@@ -273,7 +273,16 @@ Multiple_PHP_Select()
         if [[ -s /usr/local/php8.2/sbin/php-fpm && -s /usr/local/nginx/conf/enable-php8.2.conf && -s /etc/init.d/php-fpm8.2 ]]; then
             Echo_Green "14: PHP 8.2 [found]"
         fi
-        Echo_Yellow "Enter your choice (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 or 14): "
+        if [[ -s /usr/local/php8.3/sbin/php-fpm && -s /usr/local/nginx/conf/enable-php8.3.conf && -s /etc/init.d/php-fpm8.3 ]]; then
+            Echo_Green "15: PHP 8.3 [found]"
+        fi
+        if [[ -s /usr/local/php8.4/sbin/php-fpm && -s /usr/local/nginx/conf/enable-php8.4.conf && -s /etc/init.d/php-fpm8.4 ]]; then
+            Echo_Green "16: PHP 8.4 [found]"
+        fi
+        if [[ -s /usr/local/php8.5/sbin/php-fpm && -s /usr/local/nginx/conf/enable-php8.5.conf && -s /etc/init.d/php-fpm8.5 ]]; then
+            Echo_Green "17: PHP 8.5 [found]"
+        fi
+        Echo_Yellow "Enter your choice (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 or 17): "
         read php_select
         case "${php_select}" in
             1)
@@ -438,6 +447,42 @@ Multiple_PHP_Select()
                     fi
                 else
                     include_enable_php="include enable-php8.2.conf;"
+                fi
+                ;;
+            15)
+                echo "Current selection:: PHP `/usr/local/php8.3/bin/php-config --version`"
+                if [ "${enable_pathinfo}" == "y" ]; then
+                    include_enable_php="include enable-php8.3-pathinfo.conf;"
+                    if [ ! -s /usr/local/nginx/conf/enable-php8.3-pathinfo.conf ]; then
+                        \cp /usr/local/nginx/conf/enable-php-pathinfo.conf /usr/local/nginx/conf/enable-php8.3-pathinfo.conf
+                        sed -i 's/php-cgi.sock/php-cgi8.3.sock/g' /usr/local/nginx/conf/enable-php8.3-pathinfo.conf
+                    fi
+                else
+                    include_enable_php="include enable-php8.3.conf;"
+                fi
+                ;;
+            16)
+                echo "Current selection:: PHP `/usr/local/php8.4/bin/php-config --version`"
+                if [ "${enable_pathinfo}" == "y" ]; then
+                    include_enable_php="include enable-php8.4-pathinfo.conf;"
+                    if [ ! -s /usr/local/nginx/conf/enable-php8.4-pathinfo.conf ]; then
+                        \cp /usr/local/nginx/conf/enable-php-pathinfo.conf /usr/local/nginx/conf/enable-php8.4-pathinfo.conf
+                        sed -i 's/php-cgi.sock/php-cgi8.4.sock/g' /usr/local/nginx/conf/enable-php8.4-pathinfo.conf
+                    fi
+                else
+                    include_enable_php="include enable-php8.4.conf;"
+                fi
+                ;;
+            17)
+                echo "Current selection:: PHP `/usr/local/php8.5/bin/php-config --version`"
+                if [ "${enable_pathinfo}" == "y" ]; then
+                    include_enable_php="include enable-php8.5-pathinfo.conf;"
+                    if [ ! -s /usr/local/nginx/conf/enable-php8.5-pathinfo.conf ]; then
+                        \cp /usr/local/nginx/conf/enable-php-pathinfo.conf /usr/local/nginx/conf/enable-php8.5-pathinfo.conf
+                        sed -i 's/php-cgi.sock/php-cgi8.5.sock/g' /usr/local/nginx/conf/enable-php8.5-pathinfo.conf
+                    fi
+                else
+                    include_enable_php="include enable-php8.5.conf;"
                 fi
                 ;;
             *)
@@ -688,8 +733,8 @@ Del_VHost()
 
 Check_DB()
 {
-    if [[ -s /usr/local/mariadb/bin/mariadb && -s /usr/local/mariadb/bin/mysqld_safe && -s /etc/my.cnf ]]; then
-        MySQL_Bin="/usr/local/mariadb/bin/mariadb"
+    if [[ -s /usr/local/mariadb/bin/mysql && -s /usr/local/mariadb/bin/mysqld_safe && -s /etc/my.cnf ]]; then
+        MySQL_Bin="/usr/local/mariadb/bin/mysql"
         MySQL_Ver=`/usr/local/mariadb/bin/mysql_config --version`
     elif [[ -s /usr/local/mysql/bin/mysql && -s /usr/local/mysql/bin/mysqld_safe && -s /etc/my.cnf ]]; then
         MySQL_Bin="/usr/local/mysql/bin/mysql"
@@ -1239,7 +1284,7 @@ server
         ssl_certificate ${ssl_certificate};
         ssl_certificate_key ${ssl_certificate_key};
         ssl_session_timeout 5m;
-        ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+        ssl_protocols TLSv1.2 TLSv1.3;
         ssl_prefer_server_ciphers on;
         ssl_ciphers "TLS13-AES-256-GCM-SHA384:TLS13-CHACHA20-POLY1305-SHA256:TLS13-AES-128-GCM-SHA256:TLS13-AES-128-CCM-8-SHA256:TLS13-AES-128-CCM-SHA256:EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5";
         ssl_session_cache builtin:1000 shared:SSL:10m;
