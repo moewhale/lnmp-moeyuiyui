@@ -39,10 +39,10 @@ Install_ImageMagic()
         echo "ImageMagick already exists."
     else
         if echo "${Cur_PHP_Version}" | grep -Eqi '^5.2.';then
-            Download_Files https://imagemagick.org/archive/releases/ImageMagick-6.9.9-51.tar.xz ImageMagick-6.9.9-51.tar.xz
+            Download_Files https://download.imagemagick.org/archive/ImageMagick-6.9.9-51.tar.xz ImageMagick-6.9.9-51.tar.xz
             Tar_Cd ImageMagick-6.9.9-27.tar.gz ImageMagick-6.9.9-27
         else
-            Download_Files https://imagemagick.org/archive/releases/${ImageMagick_Ver}.tar.xz ${ImageMagick_Ver}.tar.xz
+            Download_Files https://download.imagemagick.org/archive/${ImageMagick_Ver}.tar.xz ${ImageMagick_Ver}.tar.xz
             Tar_Cd ${ImageMagick_Ver}.tar.xz ${ImageMagick_Ver}
         fi
 
