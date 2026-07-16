@@ -15,7 +15,7 @@ Install_PHP_Swoole()
         exit 1
     fi
 
-    if echo "${Cur_PHP_Version}" | grep -Eqi '^8.[0-3].'; then
+    if echo "${Cur_PHP_Version}" | grep -Eqi '^8.[0-5].'; then
         Download_Files https://pecl.php.net/get/${PHPSwoole_Ver}.tgz ${PHPSwoole_Ver}.tgz
         Tar_Cd ${PHPSwoole_Ver}.tgz ${PHPSwoole_Ver}
         ${PHP_Path}/bin/phpize
