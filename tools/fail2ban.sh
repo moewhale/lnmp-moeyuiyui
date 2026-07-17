@@ -35,15 +35,22 @@ elif [ "${PM}" = "apt" ]; then
 fi
 
 # 提取版本号变量，方便日后升级
-FAIL2BAN_VER="1.0.3"
+FAIL2BAN_VER="1.1.0"
 FAIL2BAN_TAR="fail2ban-${FAIL2BAN_VER}.tar.gz"
 
 echo "Downloading and Extracting..."
-# 3. 增加错误处理：如果 cd 或 tar 失败，立即退出，防止在错误目录下执行覆盖
 cd ../src || { echo "Error: Directory ../src does not exist."; exit 1; }
-Download_Files "https://sources.buildroot.net/fail2ban/${FAIL2BAN_TAR}" "${FAIL2BAN_TAR}"
 
-rm -rf "fail2ban-${FAIL2BAN_VER}" # 确保旧的解压目录被清理干净
+# 【修改这里】：直接使用官方 GitHub 的 Tags 源码链接，避开奇奇怪怪的文件名
+# GitHub 会自动将该包打包提供，链接格式固定且可靠
+DOWNLOAD_URL="https://github.com/fail2ban/fail2ban/archive/refs/tags/${FAIL2BAN_VER}.tar.gz"
+
+# LNMP 的 Download_Files 会把下载下来的文件自动重命名为我们在第二个参数指定的 fail2ban-1.1.0.tar.gz
+Download_Files "${DOWNLOAD_URL}" "${FAIL2BAN_TAR}"
+
+# 确保旧的解压目录被清理
+rm -rf "fail2ban-${FAIL2BAN_VER}"
+# 解压，GitHub 默认解压出来的文件夹名字就是 fail2ban-1.1.0
 tar zxf "${FAIL2BAN_TAR}" || { echo "Error: Failed to extract ${FAIL2BAN_TAR}."; exit 1; }
 cd "fail2ban-${FAIL2BAN_VER}" || exit 1
 
