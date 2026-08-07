@@ -10,7 +10,7 @@ if [ $(id -u) != "0" ]; then
 fi
 
 # 版本與路徑設定
-LATEST_REDIS="8.4.0"
+LATEST_REDIS="8.10.0"
 LATEST_PHPREDIS="6.3.0"
 INSTALL_DIR="/usr/local/redis"
 PHP_CONF_D="/usr/local/php/conf.d"
