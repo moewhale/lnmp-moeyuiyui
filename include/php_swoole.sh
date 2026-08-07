@@ -24,7 +24,7 @@ Install_PHP_Swoole()
         cd -
         rm -rf ${PHPSwoole_Ver}
     elif echo "${Cur_PHP_Version}" | grep -Eqi '^7.[2-4].'; then
-        Download_Files https://pecl.php.net/get//swoole-4.8.13.tgz swoole-4.8.13.tgz
+        Download_Files https://pecl.php.net/get/swoole-4.8.13.tgz swoole-4.8.13.tgz
         Tar_Cd swoole-4.8.13.tgz swoole-4.8.13
         ${PHP_Path}/bin/phpize
         ./configure --with-php-config=${PHP_Path}/bin/php-config --enable-openssl --enable-http2 --enable-swoole-json
